@@ -20,19 +20,24 @@ export default function PrihlaseniPage() {
     setError("");
     setLoading(true);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    if (result?.error) {
-      setError("Nesprávný email nebo heslo.");
+      if (!result?.ok || result?.error) {
+        setError("Nesprávný email nebo heslo.");
+        setLoading(false);
+        return;
+      }
+
+      window.location.href = "/pruvodce";
+    } catch {
+      setError("Došlo k chybě při přihlášení. Zkuste to znovu.");
       setLoading(false);
-      return;
     }
-
-    router.push("/pruvodce");
   };
 
   return (
