@@ -11,7 +11,8 @@ export async function middleware(request: NextRequest) {
 
   // Protected routes — require authentication (skip in test mode)
   if (pathname.startsWith("/pruvodce") || pathname.startsWith("/odznak")) {
-    if (!token && process.env.BYPASS_STRIPE !== "true") {
+    const bypass = process.env.BYPASS_STRIPE === "true" || process.env.NEXT_PUBLIC_BYPASS_STRIPE === "true";
+    if (!token && !bypass) {
       return NextResponse.redirect(new URL("/prihlaseni", request.url));
     }
   }
