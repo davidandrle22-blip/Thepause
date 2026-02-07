@@ -32,7 +32,7 @@ export default function OchranaUdajuPage() {
             </h2>
             <p>
               Správcem osobních údajů je provozovatel webové aplikace ThePause.cz
-              (dále jen „Správce"). Kontaktní e-mail: info@thepause.cz.
+              (dále jen „Správce"). Kontaktní e-mail: the-pause@seznam.cz.
             </p>
           </section>
 
@@ -170,7 +170,7 @@ export default function OchranaUdajuPage() {
               </li>
             </ul>
             <p className="mt-2">
-              Pro uplatnění těchto práv nás kontaktujte na info@thepause.cz.
+              Pro uplatnění těchto práv nás kontaktujte na the-pause@seznam.cz.
               Na žádost odpovíme do 30 dnů.
             </p>
           </section>

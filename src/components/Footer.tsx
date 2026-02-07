@@ -42,7 +42,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-sm text-teal-400 mb-3">Kontakt</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>info@thepause.cz</li>
+              <li>the-pause@seznam.cz</li>
               <li>
                 <a href="https://instagram.com/thepause.cz" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
                   Instagram

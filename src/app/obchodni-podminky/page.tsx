@@ -37,7 +37,7 @@ export default function ObchodniPodminkyPage() {
             </p>
             <p className="mt-2">
               Poskytovatelem je fyzická osoba podnikající dle živnostenského zákona
-              se sídlem v České republice. Kontaktní e-mail: info@thepause.cz.
+              se sídlem v České republice. Kontaktní e-mail: the-pause@seznam.cz.
             </p>
           </section>
 
@@ -134,7 +134,7 @@ export default function ObchodniPodminkyPage() {
             </p>
             <p className="mt-2">
               V případě technických problémů bránících přístupu ke službě má Uživatel
-              právo na vrácení platby. Žádost je třeba zaslat na info@thepause.cz
+              právo na vrácení platby. Žádost je třeba zaslat na the-pause@seznam.cz
               do 14 dnů od zakoupení.
             </p>
           </section>

@@ -48,7 +48,7 @@ const faqs = [
   {
     question: "Mohu dostat vrácení peněz?",
     answer:
-      "Ano, nabízíme 14denní garanci vrácení peněz bez udání důvodu. Pokud nebudete spokojeni, napište nám na info@thepause.cz a peníze vám vrátíme.",
+      "Ano, nabízíme 14denní garanci vrácení peněz bez udání důvodu. Pokud nebudete spokojeni, napište nám na the-pause@seznam.cz a peníze vám vrátíme.",
   },
 ];
 

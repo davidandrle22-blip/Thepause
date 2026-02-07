@@ -200,7 +200,7 @@ export default function CookiesPage() {
               >
                 Ochrana osobních údajů
               </Link>
-              . V případě dotazů nás kontaktujte na info@thepause.cz.
+              . V případě dotazů nás kontaktujte na the-pause@seznam.cz.
             </p>
           </section>
         </div>
