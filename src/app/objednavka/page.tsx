@@ -107,7 +107,7 @@ function ObjednavkaContent() {
         redirect: false,
       });
 
-      if (result?.error) {
+      if (!result?.ok || result?.error) {
         setError(
           "Registrace proběhla, ale přihlášení selhalo. Zkuste se přihlásit."
         );
@@ -115,7 +115,8 @@ function ObjednavkaContent() {
         return;
       }
 
-      router.push(`/api/checkout?plan=${plan}`);
+      // Full page navigation (not client-side) so browser follows the Stripe redirect
+      window.location.href = `/api/checkout?plan=${plan}`;
     } catch {
       setError("Došlo k neočekávané chybě. Zkuste to znovu.");
       setLoading(false);
