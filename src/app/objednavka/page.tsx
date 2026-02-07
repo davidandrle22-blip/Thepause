@@ -87,6 +87,7 @@ function ObjednavkaContent() {
     }
 
     try {
+      // Try to register
       const res = await fetch("/api/registrace", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -95,12 +96,14 @@ function ObjednavkaContent() {
 
       const data = await res.json();
 
-      if (!res.ok) {
+      // If error other than "user exists", show it
+      if (!res.ok && res.status !== 409) {
         setError(data.error);
         setLoading(false);
         return;
       }
 
+      // Sign in (works for both new and existing users)
       const result = await signIn("credentials", {
         email,
         password,
@@ -109,13 +112,15 @@ function ObjednavkaContent() {
 
       if (!result?.ok || result?.error) {
         setError(
-          "Registrace proběhla, ale přihlášení selhalo. Zkuste se přihlásit."
+          res.status === 409
+            ? "Nesprávné heslo pro existující účet."
+            : "Přihlášení selhalo. Zkuste to znovu."
         );
         setLoading(false);
         return;
       }
 
-      // Full page navigation (not client-side) so browser follows the Stripe redirect
+      // Full page navigation so browser follows the Stripe redirect
       window.location.href = `/api/checkout?plan=${plan}`;
     } catch {
       setError("Došlo k neočekávané chybě. Zkuste to znovu.");
