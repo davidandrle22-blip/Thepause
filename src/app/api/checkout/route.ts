@@ -68,8 +68,8 @@ export async function GET(request: Request) {
       userId: session.user.id,
       plan: planKey,
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/platba/uspech?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/platba/zruseno`,
+    success_url: `${new URL("/platba/uspech", request.url).toString()}?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: new URL("/platba/zruseno", request.url).toString(),
   });
 
   // Create pending order

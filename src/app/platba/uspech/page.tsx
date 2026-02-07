@@ -1,11 +1,27 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/Mascot";
-import Link from "next/link";
 
 export default function PlatbaUspechPage() {
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((c) => {
+        if (c <= 1) {
+          clearInterval(timer);
+          window.location.href = "/pruvodce";
+          return 0;
+        }
+        return c - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="min-h-screen gradient-bg-light flex items-center justify-center px-4">
       <motion.div
@@ -37,28 +53,28 @@ export default function PlatbaUspechPage() {
             Platba úspěšná!
           </h1>
           <p className="text-navy-600 mb-6">
-            Váš přístup k průvodci je nyní aktivní. Můžete začít svou 5denní
-            cestu.
+            Váš přístup k průvodci je nyní aktivní. Přesměrování za {countdown}s...
           </p>
 
-          <Link href="/pruvodce">
-            <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-6 rounded-xl text-base font-medium shadow-lg">
-              Začít průvodce
-              <svg
-                className="ml-2 w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
-                />
-              </svg>
-            </Button>
-          </Link>
+          <Button
+            onClick={() => { window.location.href = "/pruvodce"; }}
+            className="w-full bg-teal-600 hover:bg-teal-700 text-white py-6 rounded-xl text-base font-medium shadow-lg"
+          >
+            Začít průvodce hned
+            <svg
+              className="ml-2 w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </Button>
         </div>
       </motion.div>
     </div>
