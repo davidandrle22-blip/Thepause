@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -43,6 +43,16 @@ function ObjednavkaContent() {
   const [consent, setConsent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [testMode, setTestMode] = useState(process.env.NEXT_PUBLIC_BYPASS_STRIPE === "true");
+
+  useEffect(() => {
+    fetch("/api/config")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.bypassStripe) setTestMode(true);
+      })
+      .catch(() => {});
+  }, []);
 
   const canProceedStep1 = name.trim().length > 0 && gender !== null;
   const canProceedStep2 = goal !== null;
@@ -57,7 +67,7 @@ function ObjednavkaContent() {
     setStep((s) => s - 1);
   };
 
-  const isTestMode = process.env.NEXT_PUBLIC_BYPASS_STRIPE === "true";
+  const isTestMode = testMode;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
