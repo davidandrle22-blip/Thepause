@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Auth Models (NextAuth v5) ───
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+  gender        Gender?
+  goal          Goal?
+
+  accounts Account[]
+  sessions Session[]
+  orders   Order[]
+  diary    DiaryEntry[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Business Models ───
+
+model Order {
+  id              String        @id @default(cuid())
+  userId          String
+  plan            Plan
+  amount          Int           // v haléřích (19900 = 199 Kč)
+  currency        String        @default("czk")
+  status          OrderStatus   @default(PENDING)
+  stripeSessionId String?       @unique
+  stripePaymentId String?
+  discountCodeId  String?
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  discountCode DiscountCode? @relation(fields: [discountCodeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DiscountCode {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  discountType  DiscountType
+  discountValue Int       // procenta nebo haléře
+  maxUses       Int?
+  currentUses   Int       @default(0)
+  validFrom     DateTime  @default(now())
+  validUntil    DateTime?
+  isActive      Boolean   @default(true)
+
+  orders Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DiaryEntry {
+  id      String @id @default(cuid())
+  userId  String
+  day     Int    // 1-5
+  content String
+  mood    Int?   // 1-5
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, day])
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Enums ───
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Goal {
+  WEIGHT_LOSS
+  MENTAL_RESET
+  PHYSICAL_REGENERATION
+}
+
+enum Plan {
+  BASIC      // 199 Kč — průvodce
+  PREMIUM    // 298 Kč — průvodce + odznak + vyhodnocení
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
