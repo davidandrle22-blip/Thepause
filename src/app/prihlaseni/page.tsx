@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -121,7 +122,7 @@ export default function PrihlaseniPage() {
           </div>
 
           <button
-            onClick={() => { window.location.href = "/api/auth/signin/google?callbackUrl=%2Fpruvodce"; }}
+            onClick={() => signIn("google", { callbackUrl: "/pruvodce" })}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">

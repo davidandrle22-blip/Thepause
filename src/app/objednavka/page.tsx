@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -758,9 +759,11 @@ function ObjednavkaContent() {
                 </div>
 
                 <button
-                  onClick={() => {
-                    window.location.href = `/api/auth/signin/google?callbackUrl=${encodeURIComponent(`/api/checkout?plan=${plan}`)}`;
-                  }}
+                  onClick={() =>
+                    signIn("google", {
+                      callbackUrl: `/api/checkout?plan=${plan}`,
+                    })
+                  }
                   className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
