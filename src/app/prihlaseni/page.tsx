@@ -24,17 +24,23 @@ export default function PrihlaseniPage() {
       const csrfRes = await fetch("/api/auth/csrf");
       const { csrfToken } = await csrfRes.json();
 
-      // POST credentials directly
+      // POST credentials directly — redirect=false & json=true
+      // make NextAuth return JSON + Set-Cookie instead of 302
       const res = await fetch("/api/auth/callback/credentials", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ csrfToken, email, password }),
-        redirect: "follow",
+        body: new URLSearchParams({
+          csrfToken,
+          email,
+          password,
+          redirect: "false",
+          json: "true",
+          callbackUrl: window.location.href,
+        }),
       });
 
-      // NextAuth returns 200 with a redirect URL on success, or an error URL
-      const url = new URL(res.url);
-      if (url.searchParams.get("error")) {
+      const result = await res.json();
+      if (!result.ok || result.error) {
         setError("Nesprávný email nebo heslo.");
         setLoading(false);
         return;
