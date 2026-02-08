@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Cookies | ThePause.cz",
-  description: "Informace o používání cookies na webu ThePause.cz.",
+  title: "Cookies | The-Pulse.cz",
+  description: "Informace o používání cookies na webu The-Pulse.cz.",
 };
 
 export default function CookiesPage() {

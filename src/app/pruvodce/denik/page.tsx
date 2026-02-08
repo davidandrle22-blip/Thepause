@@ -22,7 +22,7 @@ const MOODS = [
   { value: 5, emoji: "🤩", label: "Výborně" },
 ];
 
-const LS_KEY = "thepause-diary";
+const LS_KEY = "the-pulse-diary";
 
 type DiaryEntries = Record<number, { content: string; mood: number | null }>;
 

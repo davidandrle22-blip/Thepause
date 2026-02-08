@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Ochrana osobních údajů | ThePause.cz",
-  description: "Zásady ochrany osobních údajů služby ThePause.cz.",
+  title: "Ochrana osobních údajů | The-Pulse.cz",
+  description: "Zásady ochrany osobních údajů služby The-Pulse.cz.",
 };
 
 export default function OchranaUdajuPage() {
@@ -31,7 +31,7 @@ export default function OchranaUdajuPage() {
               1. Správce osobních údajů
             </h2>
             <p>
-              Správcem osobních údajů je provozovatel webové aplikace ThePause.cz
+              Správcem osobních údajů je provozovatel webové aplikace The-Pulse.cz
               (dále jen „Správce"). Kontaktní e-mail: the-pause@seznam.cz.
             </p>
           </section>

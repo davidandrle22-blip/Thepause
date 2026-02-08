@@ -103,7 +103,7 @@ export function ForWhoSection() {
             Pro koho je průvodce?
           </h2>
           <p className="text-lg text-navy-600 max-w-2xl mx-auto">
-            Ať už je vaše motivace jakákoliv, ThePause vás provede bezpečně.
+            Ať už je vaše motivace jakákoliv, The-Pulse vás provede bezpečně.
           </p>
         </motion.div>
 

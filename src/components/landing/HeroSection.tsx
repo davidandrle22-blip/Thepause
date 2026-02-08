@@ -59,9 +59,9 @@ export function HeroSection() {
             transition={{ duration: 0.8 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white"
           >
-            <span className="text-teal-300">5 dní,</span> které změní
+            Kazdy si muze pomoci
             <br />
-            váš vztah k tělu
+            <span className="text-teal-300">skrze pust</span>
           </motion.h1>
 
           <motion.p
@@ -70,9 +70,8 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg text-white/90 mb-8 max-w-2xl leading-relaxed"
           >
-            Interaktivní průvodce vodním půstem, který vás provede hodinu po
-            hodině. Pochopte, co se děje ve vašem těle, a zvládněte to
-            bezpečně.
+            Objevte silu vodniho pustu — 5denni pruvodce, ktery zmeni vas pohled
+            na zdravi, energii a sebekontrolu.
           </motion.p>
 
           <motion.div
@@ -84,7 +83,7 @@ export function HeroSection() {
             <Link href="/objednavka">
               <Button
                 size="lg"
-                className="bg-teal-500 hover:bg-teal-600 text-white text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="bg-teal-500 hover:bg-teal-600 text-white text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all animate-pulse"
               >
                 Začít za 199 Kč
                 <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

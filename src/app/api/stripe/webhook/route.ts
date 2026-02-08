@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
+import { sendOrderNotification } from "@/lib/email";
 import Stripe from "stripe";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +40,25 @@ export async function POST(request: Request) {
           stripePaymentId: session.payment_intent as string,
         },
       });
+
+      // Send notification email
+      try {
+        const order = await prisma.order.findFirst({
+          where: { stripeSessionId: session.id },
+          include: { user: true },
+        });
+        if (order) {
+          await sendOrderNotification({
+            customerName: order.user?.name || session.customer_details?.name || "Neznamy",
+            customerEmail: order.user?.email || session.customer_details?.email || "",
+            plan: order.plan === "PREMIUM" ? "Pruvodce + Odznak" : "Zakladni pruvodce",
+            amount: order.amount / 100,
+            orderId: order.id,
+          });
+        }
+      } catch (emailError) {
+        console.error("Failed to send order notification email:", emailError);
+      }
 
       break;
     }

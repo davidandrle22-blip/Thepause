@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
         <p className="text-navy-400 text-sm">
-          Přehled vašeho podnikání na ThePause.cz
+          Přehled vašeho podnikání na The-Pulse.cz
         </p>
       </div>
 

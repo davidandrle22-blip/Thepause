@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ThePause.cz — Průvodce vodním půstem",
-    short_name: "ThePause",
+    name: "The-Pulse.cz — Průvodce vodním půstem",
+    short_name: "The-Pulse",
     description: "Interaktivní průvodce 5denním vodním půstem",
     start_url: "/",
     display: "standalone",

@@ -6,6 +6,13 @@ import Link from "next/link";
 import { FASTING_PHASES, CHECKLIST_ITEMS, type FastingPhase } from "@/data/fasting-phases";
 import { Mascot } from "@/components/Mascot";
 import { Button } from "@/components/ui/button";
+import { DisclaimerBox } from "@/components/guide/DisclaimerBox";
+import { WarningSignals } from "@/components/guide/WarningSignals";
+import { EmergencyButton } from "@/components/guide/EmergencyButton";
+import { DailyChecklist } from "@/components/guide/DailyChecklist";
+import { MoodBarometer } from "@/components/guide/MoodBarometer";
+import { ProgressBar } from "@/components/guide/ProgressBar";
+import { GuideSavingsCalculator } from "@/components/guide/SavingsCalculator";
 
 type TabKey = "body" | "science" | "feelings" | "challenge";
 
@@ -603,8 +610,8 @@ export default function PruvodcePage() {
   const [activeTab, setActiveTab] = useState<Record<string, TabKey>>({});
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
   const [started, setStarted] = useState(false);
-  const [completedPhases, toggleCompleted] = useLocalStorageSet("thepause-completed-phases");
-  const [completedChallenges, toggleChallenge] = useLocalStorageSet("thepause-completed-challenges");
+  const [completedPhases, toggleCompleted] = useLocalStorageSet("the-pulse-completed-phases");
+  const [completedChallenges, toggleChallenge] = useLocalStorageSet("the-pulse-completed-challenges");
   const [celebratePhase, setCelebratePhase] = useState<string | null>(null);
 
   const toggleCheck = (id: string) => {
@@ -760,6 +767,9 @@ export default function PruvodcePage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Top disclaimer */}
+        <DisclaimerBox />
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-navy-900">
@@ -769,6 +779,10 @@ export default function PruvodcePage() {
             Klikněte na fázi pro detail — 120 hodin, 9 fází, celé tělo
           </p>
         </div>
+
+        {/* Progress + Savings */}
+        <ProgressBar completedPhases={completedCount} />
+        <GuideSavingsCalculator />
 
         {/* Timeline */}
         <div className="relative mb-12">
@@ -854,6 +868,9 @@ export default function PruvodcePage() {
                         className="overflow-hidden"
                       >
                         <div className="bg-white rounded-b-2xl border border-t-0 border-teal-200 p-6 -mt-2 space-y-5">
+                          {/* Per-phase disclaimer */}
+                          <DisclaimerBox compact />
+
                           {/* Tabs */}
                           <div className="flex gap-1 bg-gray-50 rounded-xl p-1">
                             {TABS.map((tab) => (
@@ -900,6 +917,10 @@ export default function PruvodcePage() {
                             </motion.div>
                           </AnimatePresence>
 
+                          {/* Daily interactive features */}
+                          <DailyChecklist day={Math.max(1, Math.ceil(phase.hourEnd / 24))} />
+                          <MoodBarometer day={Math.max(1, Math.ceil(phase.hourEnd / 24))} />
+
                           {/* Did you know */}
                           <DidYouKnow facts={phase.didYouKnow} />
 
@@ -932,6 +953,10 @@ export default function PruvodcePage() {
                             </div>
                           </div>
 
+                          {/* Warning signals & emergency */}
+                          <WarningSignals />
+                          <EmergencyButton />
+
                           {/* Mark as completed */}
                           <button
                             onClick={() => handleMarkComplete(phase.id)}
@@ -954,6 +979,9 @@ export default function PruvodcePage() {
             })}
           </div>
         </div>
+
+        {/* Bottom disclaimer */}
+        <DisclaimerBox />
 
         {/* Footer CTA */}
         <div className="text-center pb-12">

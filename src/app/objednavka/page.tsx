@@ -41,6 +41,9 @@ function ObjednavkaContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [consent, setConsent] = useState(false);
+  const [consentHealth, setConsentHealth] = useState(false);
+  const [consentVOP, setConsentVOP] = useState(false);
+  const [consentAttempted, setConsentAttempted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [testMode, setTestMode] = useState(process.env.NEXT_PUBLIC_BYPASS_STRIPE === "true");
@@ -73,8 +76,9 @@ function ObjednavkaContent() {
     e.preventDefault();
     setError("");
 
-    if (!consent) {
-      setError("Musíte potvrdit souhlas s upozorněním.");
+    if (!consent || !consentHealth || !consentVOP) {
+      setConsentAttempted(true);
+      setError("Musíte potvrdit všechny souhlasy.");
       return;
     }
 
@@ -716,31 +720,75 @@ function ObjednavkaContent() {
                     />
                   </div>
 
-                  <div className="flex items-start gap-3">
-                    <input
-                      id="consent"
-                      type="checkbox"
-                      checked={consent}
-                      onChange={(e) => setConsent(e.target.checked)}
-                      className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
-                    />
-                    <label
-                      htmlFor="consent"
-                      className="text-xs text-navy-600 leading-relaxed"
-                    >
-                      Potvrzuji, že jsem se seznámil/a s{" "}
-                      <span className="text-teal-600 font-medium">
-                        upozorněním
-                      </span>{" "}
-                      a beru na vědomí, že obsah má edukační charakter a
-                      nenahrazuje lékařskou péči.
-                    </label>
+                  <div className="space-y-3 border-t border-gray-100 pt-4">
+                    <div className={`flex items-start gap-3 p-3 rounded-lg border transition-colors ${
+                      consentAttempted && !consentHealth ? "border-red-300 bg-red-50" : "border-transparent"
+                    }`}>
+                      <input
+                        id="consentHealth"
+                        type="checkbox"
+                        checked={consentHealth}
+                        onChange={(e) => setConsentHealth(e.target.checked)}
+                        className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                      />
+                      <label
+                        htmlFor="consentHealth"
+                        className="text-xs text-navy-600 leading-relaxed"
+                      >
+                        Beru na vedomi, ze do 5denniho vodniho pustu vstupuji na vlastni nebezpeci
+                        a s plnou zodpovednosti za svuj zdravotni stav. Tento pruvodce ma vyhradne
+                        edukativni charakter a nenahrazuje lekarskou konzultaci. Pred zahajenim pustu
+                        jsem konzultoval/a nebo budu konzultovat svuj zamer s lekarem.
+                      </label>
+                    </div>
+
+                    <div className={`flex items-start gap-3 p-3 rounded-lg border transition-colors ${
+                      consentAttempted && !consentVOP ? "border-red-300 bg-red-50" : "border-transparent"
+                    }`}>
+                      <input
+                        id="consentVOP"
+                        type="checkbox"
+                        checked={consentVOP}
+                        onChange={(e) => setConsentVOP(e.target.checked)}
+                        className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                      />
+                      <label
+                        htmlFor="consentVOP"
+                        className="text-xs text-navy-600 leading-relaxed"
+                      >
+                        Souhlasim s{" "}
+                        <Link href="/obchodni-podminky" className="text-teal-600 font-medium underline" target="_blank">
+                          Vseobecnymi obchodnimi podminkami
+                        </Link>
+                      </label>
+                    </div>
+
+                    <div className="flex items-start gap-3 p-3">
+                      <input
+                        id="consent"
+                        type="checkbox"
+                        checked={consent}
+                        onChange={(e) => setConsent(e.target.checked)}
+                        className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                      />
+                      <label
+                        htmlFor="consent"
+                        className="text-xs text-navy-600 leading-relaxed"
+                      >
+                        Potvrzuji, ze jsem se seznamil/a s{" "}
+                        <span className="text-teal-600 font-medium">
+                          upozornenim
+                        </span>{" "}
+                        a beru na vedomi, ze obsah ma edukacni charakter a
+                        nenahrazuje lekarskou peci.
+                      </label>
+                    </div>
                   </div>
 
                   <Button
                     type="submit"
-                    disabled={loading}
-                    className="w-full bg-teal-600 hover:bg-teal-700 text-white py-6 rounded-xl text-base font-medium shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+                    disabled={loading || !consent || !consentHealth || !consentVOP}
+                    className="w-full bg-teal-600 hover:bg-teal-700 text-white py-6 rounded-xl text-base font-medium shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? "Vytvářím účet..." : "Pokračovat k platbě"}
                   </Button>

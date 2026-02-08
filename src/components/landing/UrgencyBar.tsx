@@ -71,7 +71,7 @@ export function UrgencyBar() {
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          Akční cena ještě{" "}
+          🔥 Akcni cena 199 Kc — konci za{" "}
           <span className="font-mono font-bold text-gold-400">
             {String(timeLeft.hours).padStart(2, "0")}:
             {String(timeLeft.minutes).padStart(2, "0")}:

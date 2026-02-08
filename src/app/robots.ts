@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin", "/api", "/pruvodce", "/odznak"],
       },
     ],
-    sitemap: "https://thepause.cz/sitemap.xml",
+    sitemap: "https://the-pulse.cz/sitemap.xml",
   };
 }

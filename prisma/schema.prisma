@@ -20,10 +20,11 @@ model User {
   gender        Gender?
   goal          Goal?
 
-  accounts Account[]
-  sessions Session[]
-  orders   Order[]
-  diary    DiaryEntry[]
+  accounts     Account[]
+  sessions     Session[]
+  orders       Order[]
+  diary        DiaryEntry[]
+  certificates Certificate[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -68,15 +69,16 @@ model VerificationToken {
 // ─── Business Models ───
 
 model Order {
-  id              String        @id @default(cuid())
-  userId          String
-  plan            Plan
-  amount          Int           // v haléřích (19900 = 199 Kč)
-  currency        String        @default("czk")
-  status          OrderStatus   @default(PENDING)
-  stripeSessionId String?       @unique
-  stripePaymentId String?
-  discountCodeId  String?
+  id                String        @id @default(cuid())
+  userId            String
+  plan              Plan
+  amount            Int           // v haléřích (19900 = 199 Kč)
+  currency          String        @default("czk")
+  status            OrderStatus   @default(PENDING)
+  stripeSessionId   String?       @unique
+  stripePaymentId   String?
+  discountCodeId    String?
+  recoveryEmailSent Boolean       @default(false)
 
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   discountCode DiscountCode? @relation(fields: [discountCodeId], references: [id])
@@ -115,6 +117,19 @@ model DiaryEntry {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, day])
+}
+
+model Certificate {
+  id            String   @id @default(cuid())
+  userId        String
+  name          String
+  startDate     DateTime
+  endDate       DateTime
+  certificateId String   @unique // PULSE-2026-XXXXX format
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }
 
 model Setting {

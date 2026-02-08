@@ -16,7 +16,7 @@ export async function GET() {
       pricePremium: map["price_premium"] ?? "298",
       seoTitle:
         map["seo_title"] ??
-        "ThePause.cz — Chytrý průvodce 5denním vodním půstem",
+        "The-Pulse.cz — Chytrý průvodce 5denním vodním půstem",
       seoDescription:
         map["seo_description"] ??
         "Interaktivní průvodce vodním půstem, který vás provede hodinu po hodině.",

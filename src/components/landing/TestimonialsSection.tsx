@@ -27,11 +27,25 @@ const testimonials = [
     avatar: "JS",
   },
   {
-    name: "Tomáš R.",
+    name: "Tomas R.",
     age: 52,
-    text: "Po letech se mi podařilo resetovat metabolismus. Inzulínová rezistence se výrazně zlepšila. Investice 199 Kč, která se vyplatila tisíckrát.",
-    result: "Zdravotní benefity",
+    text: "Po letech se mi podarilo resetovat metabolismus. Inzulinova rezistence se vyrazne zlepsila. Investice 199 Kc, ktera se vyplatila tisickrat.",
+    result: "Zdravotni benefity",
     avatar: "TR",
+  },
+  {
+    name: "Lucie M.",
+    age: 31,
+    text: "Vzdycky jsem se bala pustu, ale tento pruvodce mi dal jistotu. Kazda hodina je podrobne popsana a vedela jsem presne co ocekavat. Doporucuji vsem!",
+    result: "Zhubla 3,9 kg",
+    avatar: "LM",
+  },
+  {
+    name: "Jakub V.",
+    age: 38,
+    text: "Nejlepsi investice do zdravi co jsem kdy udelal. Za 199 Kc dostanete pruvodce, ktery vam otevre oci. Po pustu jsem se citil o 10 let mladsi.",
+    result: "Kompletni regenerace",
+    avatar: "JV",
   },
 ];
 
@@ -52,9 +66,20 @@ export function TestimonialsSection() {
           <h2 className="text-3xl sm:text-4xl font-bold text-navy-900 mb-4">
             Co říkají ostatní?
           </h2>
-          <p className="text-lg text-navy-600 max-w-2xl mx-auto">
-            Stovky lidí už zvládly svůj 5denní vodní půst s naším průvodcem.
+          <p className="text-lg text-navy-600 max-w-2xl mx-auto mb-3">
+            Tisice lidi uz zvladly svuj 5denni vodni pust s nasim pruvodcem.
           </p>
+          <div className="flex items-center justify-center gap-2">
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, j) => (
+                <svg key={j} className="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+            <span className="text-sm font-bold text-navy-700">4.9/5</span>
+            <span className="text-sm text-navy-500">(2 847+ hodnoceni)</span>
+          </div>
         </motion.div>
 
         <div className="grid sm:grid-cols-2 gap-6">

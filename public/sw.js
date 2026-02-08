@@ -1,4 +1,4 @@
-const CACHE_NAME = "thepause-v1";
+const CACHE_NAME = "the-pulse-v1";
 const STATIC_ASSETS = [
   "/",
   "/pruvodce",

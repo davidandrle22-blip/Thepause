@@ -24,7 +24,7 @@ export default function AdminLayout({
       <aside className="w-64 bg-navy-800 border-r border-navy-700 flex-shrink-0">
         <div className="p-6">
           <Link href="/" className="text-xl font-bold text-white">
-            ThePause<span className="text-teal-400">.cz</span>
+            The-Pulse<span className="text-teal-400">.cz</span>
           </Link>
           <p className="text-xs text-navy-400 mt-1">Admin Panel</p>
         </div>

@@ -9,7 +9,9 @@ import { StatsSection } from "@/components/landing/StatsSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { PricingSection } from "@/components/landing/PricingSection";
+import { SavingsCalculator } from "@/components/landing/SavingsCalculator";
 import { UrgencyBar } from "@/components/landing/UrgencyBar";
+import { FomoToast } from "@/components/landing/FomoToast";
 import { StickyCTA } from "@/components/landing/StickyCTA";
 
 export default function Home() {
@@ -26,10 +28,12 @@ export default function Home() {
         <StatsSection />
         <TestimonialsSection />
         <FAQSection />
+        <SavingsCalculator />
         <PricingSection />
       </main>
       <Footer />
       <StickyCTA />
+      <FomoToast />
     </>
   );
 }

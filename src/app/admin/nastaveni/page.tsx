@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export default function NastaveniPage() {
   const [prices, setPrices] = useState({ basic: "199", premium: "298" });
   const [seo, setSeo] = useState({
-    title: "ThePause.cz — Chytrý průvodce 5denním vodním půstem",
+    title: "The-Pulse.cz — Chytrý průvodce 5denním vodním půstem",
     description:
       "Interaktivní průvodce vodním půstem, který vás provede hodinu po hodině. 5 dní, jen voda, vaše restart tlačítko.",
   });

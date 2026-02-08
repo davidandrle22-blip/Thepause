@@ -12,7 +12,7 @@ export function Footer() {
               <svg width="28" height="34" viewBox="0 0 90 108" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M45 4C45 4 10 52 10 72C10 92 25 104 45 104C65 104 80 92 80 72C80 52 45 4 45 4Z" fill="#14b8a6" stroke="#5eead4" strokeWidth="2"/>
               </svg>
-              <span className="text-lg font-bold text-teal-400">ThePause.cz</span>
+              <span className="text-lg font-bold text-teal-400">The-Pulse.cz</span>
             </div>
             <p className="text-sm text-gray-400">
               Interaktivní průvodce 5denním vodním půstem. Bezpečně, s odborným vedením.
@@ -44,7 +44,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-gray-400">
               <li>the-pause@seznam.cz</li>
               <li>
-                <a href="https://instagram.com/thepause.cz" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                <a href="https://instagram.com/the-pulse.cz" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
                   Instagram
                 </a>
               </li>
@@ -67,7 +67,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-          <p>&copy; {new Date().getFullYear()} ThePause.cz — Všechna práva vyhrazena.</p>
+          <p>&copy; {new Date().getFullYear()} The-Pulse.cz — Všechna práva vyhrazena.</p>
           <p>Vytvořeno s láskou v ČR</p>
         </div>
       </div>
