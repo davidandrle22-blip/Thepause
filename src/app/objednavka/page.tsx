@@ -111,11 +111,8 @@ function ObjednavkaContent() {
       });
 
       if (!signInRes.ok) {
-        setError(
-          res.status === 409
-            ? "Nesprávné heslo pro existující účet."
-            : "Přihlášení selhalo. Zkuste to znovu."
-        );
+        const signInData = await signInRes.json();
+        setError(signInData.error || "Přihlášení selhalo. Zkuste to znovu.");
         setLoading(false);
         return;
       }

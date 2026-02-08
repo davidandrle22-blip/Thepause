@@ -28,7 +28,8 @@ export default function PrihlaseniPage() {
       });
 
       if (!res.ok) {
-        setError("Nesprávný email nebo heslo.");
+        const data = await res.json();
+        setError(data.error || "Nesprávný email nebo heslo.");
         setLoading(false);
         return;
       }

@@ -20,9 +20,16 @@ export async function POST(request: Request) {
       where: { email: email as string },
     });
 
-    if (!user || !user.password) {
+    if (!user) {
       return NextResponse.json(
-        { ok: false, error: "Nesprávný email nebo heslo" },
+        { ok: false, error: "Účet s tímto emailem neexistuje." },
+        { status: 401 }
+      );
+    }
+
+    if (!user.password) {
+      return NextResponse.json(
+        { ok: false, error: "Tento účet používá přihlášení přes Google. Použijte tlačítko 'Přihlásit přes Google'." },
         { status: 401 }
       );
     }
@@ -30,7 +37,7 @@ export async function POST(request: Request) {
     const isValid = await bcrypt.compare(password as string, user.password);
     if (!isValid) {
       return NextResponse.json(
-        { ok: false, error: "Nesprávný email nebo heslo" },
+        { ok: false, error: "Nesprávné heslo." },
         { status: 401 }
       );
     }
