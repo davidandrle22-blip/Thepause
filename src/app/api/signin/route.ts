@@ -35,7 +35,13 @@ export async function POST(request: Request) {
       );
     }
 
+    const isProduction = process.env.NODE_ENV === "production";
+    const cookieName = isProduction
+      ? "__Secure-authjs.session-token"
+      : "authjs.session-token";
+
     // Create JWT token compatible with NextAuth v5
+    // salt MUST match the cookie name for auth() to decode it
     const token = await encode({
       token: {
         id: user.id,
@@ -47,15 +53,10 @@ export async function POST(request: Request) {
         sub: user.id,
       },
       secret: process.env.AUTH_SECRET!,
-      salt: "authjs.session-token",
+      salt: cookieName,
     });
 
     const response = NextResponse.json({ ok: true });
-
-    const isProduction = process.env.NODE_ENV === "production";
-    const cookieName = isProduction
-      ? "__Secure-authjs.session-token"
-      : "authjs.session-token";
 
     response.cookies.set(cookieName, token, {
       httpOnly: true,
