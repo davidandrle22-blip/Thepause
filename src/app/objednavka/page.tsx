@@ -102,26 +102,14 @@ function ObjednavkaContent() {
         return;
       }
 
-      // Sign in via direct fetch (works for both new and existing users)
-      // redirect=false & json=true make NextAuth return JSON + Set-Cookie
-      const csrfRes = await fetch("/api/auth/csrf");
-      const { csrfToken } = await csrfRes.json();
-
-      const signInRes = await fetch("/api/auth/callback/credentials", {
+      // Sign in via custom API (bypasses next-auth/react issues)
+      const signInRes = await fetch("/api/signin", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          csrfToken,
-          email,
-          password,
-          redirect: "false",
-          json: "true",
-          callbackUrl: window.location.href,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
-      const signInResult = await signInRes.json();
-      if (!signInResult.ok || signInResult.error) {
+      if (!signInRes.ok) {
         setError(
           res.status === 409
             ? "Nesprávné heslo pro existující účet."
