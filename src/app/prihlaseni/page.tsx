@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -21,13 +20,21 @@ export default function PrihlaseniPage() {
     setLoading(true);
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      // Fetch CSRF token
+      const csrfRes = await fetch("/api/auth/csrf");
+      const { csrfToken } = await csrfRes.json();
+
+      // POST credentials directly
+      const res = await fetch("/api/auth/callback/credentials", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ csrfToken, email, password }),
+        redirect: "follow",
       });
 
-      if (!result?.ok || result?.error) {
+      // NextAuth returns 200 with a redirect URL on success, or an error URL
+      const url = new URL(res.url);
+      if (url.searchParams.get("error")) {
         setError("Nesprávný email nebo heslo.");
         setLoading(false);
         return;
@@ -122,7 +129,7 @@ export default function PrihlaseniPage() {
           </div>
 
           <button
-            onClick={() => signIn("google", { callbackUrl: "/pruvodce" })}
+            onClick={() => { window.location.href = "/api/auth/signin/google?callbackUrl=%2Fpruvodce"; }}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">

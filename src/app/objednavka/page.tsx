@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -103,14 +102,19 @@ function ObjednavkaContent() {
         return;
       }
 
-      // Sign in (works for both new and existing users)
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      // Sign in via direct fetch (works for both new and existing users)
+      const csrfRes = await fetch("/api/auth/csrf");
+      const { csrfToken } = await csrfRes.json();
+
+      const signInRes = await fetch("/api/auth/callback/credentials", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ csrfToken, email, password }),
+        redirect: "follow",
       });
 
-      if (!result?.ok || result?.error) {
+      const signInUrl = new URL(signInRes.url);
+      if (signInUrl.searchParams.get("error")) {
         setError(
           res.status === 409
             ? "Nesprávné heslo pro existující účet."
@@ -759,11 +763,9 @@ function ObjednavkaContent() {
                 </div>
 
                 <button
-                  onClick={() =>
-                    signIn("google", {
-                      callbackUrl: `/api/checkout?plan=${plan}`,
-                    })
-                  }
+                  onClick={() => {
+                    window.location.href = `/api/auth/signin/google?callbackUrl=${encodeURIComponent(`/api/checkout?plan=${plan}`)}`;
+                  }}
                   className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
