@@ -57,7 +57,7 @@ export default function PrihlaseniPage() {
             Přihlášení
           </h1>
           <p className="text-navy-600 text-sm text-center mb-6">
-            Přihlaste se ke svému průvodci
+            Přihlaste se ke svému průvodci.
           </p>
 
           {error && (
