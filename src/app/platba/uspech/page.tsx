@@ -143,10 +143,10 @@ function UspechContent() {
   };
 
   const handleGoogleSignIn = async () => {
-    // After Google sign-in, user lands on /platba/uspech/google-callback
-    // which links the order and redirects to /pruvodce
+    // JWT callback auto-links orphaned orders by email and sets hasPaid
+    // so we can redirect straight to /pruvodce
     signIn("google", {
-      callbackUrl: `/platba/uspech/propojeni?session_id=${sessionId}`,
+      callbackUrl: "/pruvodce",
     });
   };
 
