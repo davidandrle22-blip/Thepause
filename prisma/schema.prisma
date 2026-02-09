@@ -71,7 +71,8 @@ model VerificationToken {
 
 model Order {
   id                String        @id @default(cuid())
-  userId            String
+  userId            String?
+  email             String?
   plan              Plan
   amount            Int           // v haléřích (19900 = 199 Kč)
   currency          String        @default("czk")
@@ -81,7 +82,7 @@ model Order {
   discountCodeId    String?
   recoveryEmailSent Boolean       @default(false)
 
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
   discountCode DiscountCode? @relation(fields: [discountCodeId], references: [id])
 
   createdAt DateTime @default(now())

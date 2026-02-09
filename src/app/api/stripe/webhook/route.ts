@@ -49,8 +49,8 @@ export async function POST(request: Request) {
         });
         if (order) {
           await sendOrderNotification({
-            customerName: order.user?.name || session.customer_details?.name || "Neznamy",
-            customerEmail: order.user?.email || session.customer_details?.email || "",
+            customerName: order.user?.name || session.customer_details?.name || session.metadata?.name || "Neznamy",
+            customerEmail: order.user?.email || order.email || session.customer_details?.email || "",
             plan: order.plan === "PREMIUM" ? "Pruvodce + Odznak" : "Zakladni pruvodce",
             amount: order.amount / 100,
             orderId: order.id,

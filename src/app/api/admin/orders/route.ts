@@ -22,8 +22,8 @@ export async function GET(request: Request) {
     return NextResponse.json(
       orders.map((o) => ({
         id: o.id,
-        email: o.user.email,
-        name: o.user.name,
+        email: o.user?.email ?? o.email ?? "",
+        name: o.user?.name ?? "",
         plan: o.plan,
         amount: o.amount / 100,
         status: o.status,

@@ -81,6 +81,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             token.gender = dbUser.gender;
             token.goal = dbUser.goal;
 
+            // Auto-link orphaned orders (paid before registration)
+            if (email) {
+              await prisma.order.updateMany({
+                where: { email, userId: null },
+                data: { userId: dbUser.id },
+              });
+            }
+
             const paidOrder = await prisma.order.findFirst({
               where: { userId: dbUser.id, status: "PAID" },
               select: { plan: true },

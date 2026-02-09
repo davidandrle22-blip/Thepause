@@ -42,6 +42,12 @@ export async function POST(request: Request) {
       );
     }
 
+    // Auto-link orphaned orders (paid before registration)
+    await prisma.order.updateMany({
+      where: { email: user.email, userId: null },
+      data: { userId: user.id },
+    });
+
     const paidOrder = await prisma.order.findFirst({
       where: { userId: user.id, status: "PAID" },
       select: { plan: true },
