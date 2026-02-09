@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getSeasonalMessage } from "@/config/conversion";
+import { getSeasonalMessage } from "@/config/conversion"; // v4
 
 export function SeasonalBanner() {
   const [message, setMessage] = useState("");
