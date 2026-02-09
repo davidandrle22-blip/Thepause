@@ -25,6 +25,7 @@ model User {
   orders       Order[]
   diary        DiaryEntry[]
   certificates Certificate[]
+  devices      UserDevice[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -138,6 +139,19 @@ model Setting {
   value String
 
   updatedAt DateTime @updatedAt
+}
+
+model UserDevice {
+  id         String   @id @default(cuid())
+  userId     String
+  deviceId   String
+  deviceName String
+  lastUsedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, deviceId])
 }
 
 // ─── Enums ───

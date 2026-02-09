@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/Mascot";
 import { jsPDF } from "jspdf";
+import { DeviceGate } from "@/components/DeviceGate";
+import { GuardedContent } from "@/components/GuardedContent";
 
 function generatePDF(name: string, startDate: string, endDate: string, certId: string) {
   const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
@@ -77,6 +79,16 @@ function generatePDF(name: string, startDate: string, endDate: string, certId: s
 }
 
 export default function OdznakPage() {
+  return (
+    <DeviceGate>
+      <GuardedContent>
+        <OdznakContent />
+      </GuardedContent>
+    </DeviceGate>
+  );
+}
+
+function OdznakContent() {
   const [step, setStep] = useState<"form" | "confirmed" | "done">("form");
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState("");

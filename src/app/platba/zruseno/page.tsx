@@ -28,7 +28,7 @@ export default function PlatbaZrusenoPage() {
           <div className="space-y-3">
             <Link href="/objednavka">
               <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-5 rounded-xl text-base font-medium">
-                Zkusit znovu
+                Dokončit objednávku
               </Button>
             </Link>
             <Link href="/">
@@ -40,6 +40,16 @@ export default function PlatbaZrusenoPage() {
               </Button>
             </Link>
           </div>
+
+          <p className="text-xs text-navy-400 mt-6">
+            Máte otázky? Napište nám na{" "}
+            <a href="mailto:the-pause@seznam.cz" className="text-teal-600 hover:underline">
+              the-pause@seznam.cz
+            </a>
+          </p>
+          <p className="text-xs text-navy-400 mt-2">
+            Přes 2 800 spokojených zákazníků
+          </p>
         </div>
       </motion.div>
     </div>

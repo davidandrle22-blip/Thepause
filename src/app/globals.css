@@ -241,3 +241,27 @@
 .animate-fade-in-up {
   animation: fade-in-up 0.4s ease-out forwards;
 }
+
+/* Fade in for toasts */
+@keyframes fade-in {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  100% { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Print protection for guide content */
+@media print {
+  .guide-content {
+    display: none !important;
+  }
+  body::after {
+    content: "Tisk průvodce není povolen. Zakoupeno na The-Pulse.cz";
+    display: block;
+    font-size: 24px;
+    text-align: center;
+    padding: 100px;
+  }
+}

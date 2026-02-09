@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/Mascot";
+import { TrustBadges } from "@/components/landing/TrustBadges";
 import Link from "next/link";
 
 export default function ObjednavkaPage() {
@@ -735,10 +736,10 @@ function ObjednavkaContent() {
                         htmlFor="consentHealth"
                         className="text-xs text-navy-600 leading-relaxed"
                       >
-                        Beru na vedomi, ze do 5denniho vodniho pustu vstupuji na vlastni nebezpeci
-                        a s plnou zodpovednosti za svuj zdravotni stav. Tento pruvodce ma vyhradne
-                        edukativni charakter a nenahrazuje lekarskou konzultaci. Pred zahajenim pustu
-                        jsem konzultoval/a nebo budu konzultovat svuj zamer s lekarem.
+                        Beru na vědomí, že do 5denního vodního půstu vstupuji na vlastní nebezpečí
+                        a s plnou zodpovědností za svůj zdravotní stav. Tento průvodce má výhradně
+                        edukativní charakter a nenahrazuje lékařskou konzultaci. Před zahájením půstu
+                        jsem konzultoval/a nebo budu konzultovat svůj záměr s lékařem.
                       </label>
                     </div>
 
@@ -756,9 +757,9 @@ function ObjednavkaContent() {
                         htmlFor="consentVOP"
                         className="text-xs text-navy-600 leading-relaxed"
                       >
-                        Souhlasim s{" "}
+                        Souhlasím s{" "}
                         <Link href="/obchodni-podminky" className="text-teal-600 font-medium underline" target="_blank">
-                          Vseobecnymi obchodnimi podminkami
+                          Všeobecnými obchodními podmínkami
                         </Link>
                       </label>
                     </div>
@@ -775,12 +776,12 @@ function ObjednavkaContent() {
                         htmlFor="consent"
                         className="text-xs text-navy-600 leading-relaxed"
                       >
-                        Potvrzuji, ze jsem se seznamil/a s{" "}
+                        Potvrzuji, že jsem se seznámil/a s{" "}
                         <span className="text-teal-600 font-medium">
-                          upozornenim
+                          upozorněním
                         </span>{" "}
-                        a beru na vedomi, ze obsah ma edukacni charakter a
-                        nenahrazuje lekarskou peci.
+                        a beru na vědomí, že obsah má edukační charakter a
+                        nenahrazuje lékařskou péči.
                       </label>
                     </div>
                   </div>
@@ -850,6 +851,14 @@ function ObjednavkaContent() {
                     Přihlásit se
                   </Link>
                 </p>
+
+                <div className="mt-6 pt-4 border-t border-gray-100">
+                  <TrustBadges />
+                  <p className="text-[10px] text-navy-400 text-center mt-4 leading-relaxed">
+                    Zakoupením získáváte osobní licenci pro 1 uživatele.
+                    Šíření, kopírování nebo sdílení obsahu je zakázáno.
+                  </p>
+                </div>
               </div>
             </motion.div>
           )}

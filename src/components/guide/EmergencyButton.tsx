@@ -11,7 +11,7 @@ export function EmergencyButton() {
         onClick={() => setExpanded(!expanded)}
         className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
       >
-        🆘 Potrebuji pomoc
+        🆘 Potřebuji pomoc
       </button>
       {expanded && (
         <div className="mt-3 bg-red-50 border border-red-200 rounded-xl p-4 space-y-3">
@@ -21,8 +21,8 @@ export function EmergencyButton() {
           >
             <span className="text-2xl">🚑</span>
             <div>
-              <div className="font-bold text-red-800 text-sm">155 — Zachranna sluzba</div>
-              <div className="text-xs text-red-600">Zdravotni tisnovka</div>
+              <div className="font-bold text-red-800 text-sm">155 — Záchranná služba</div>
+              <div className="text-xs text-red-600">Zdravotní tísňovka</div>
             </div>
           </a>
           <a
@@ -31,8 +31,8 @@ export function EmergencyButton() {
           >
             <span className="text-2xl">📞</span>
             <div>
-              <div className="font-bold text-red-800 text-sm">112 — Tisnovka</div>
-              <div className="text-xs text-red-600">Jednotne evropske cislo tisnovcho volani</div>
+              <div className="font-bold text-red-800 text-sm">112 — Tísňovka</div>
+              <div className="text-xs text-red-600">Jednotné evropské číslo tísňového volání</div>
             </div>
           </a>
         </div>

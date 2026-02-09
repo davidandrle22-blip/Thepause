@@ -7,6 +7,8 @@ declare module "next-auth" {
       role: string;
       gender: string | null;
       goal: string | null;
+      hasPaid: boolean;
+      paidPlan: string | null;
     } & DefaultSession["user"];
   }
 }
@@ -17,5 +19,7 @@ declare module "next-auth/jwt" {
     role: string;
     gender: string | null;
     goal: string | null;
+    hasPaid: boolean;
+    paidPlan: string | null;
   }
 }

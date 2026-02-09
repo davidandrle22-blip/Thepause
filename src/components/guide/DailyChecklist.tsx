@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 
 const DAILY_ITEMS = [
-  "Vypil/a jsem dostatek vody (min. 2-3l)",
-  "Odpocival/a jsem dostatecne",
-  "Zmeril/a jsem si tlak/tep",
-  "Zapsal/a jsem si sve pocity",
-  "Nemel/a jsem zavazne priznaky",
+  "Vypil/a jsem dostatek vody (min. 2–3 l)",
+  "Odpočíval/a jsem dostatečně",
+  "Změřil/a jsem si tlak/tep",
+  "Zapsal/a jsem si své pocity",
+  "Neměl/a jsem závažné příznaky",
 ];
 
 export function DailyChecklist({ day }: { day: number }) {
@@ -35,7 +35,7 @@ export function DailyChecklist({ day }: { day: number }) {
   return (
     <div className="bg-teal-50/50 border border-teal-200 rounded-xl p-4 my-4">
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-bold text-navy-900">Denni checklist</h4>
+        <h4 className="text-sm font-bold text-navy-900">Denní checklist</h4>
         <span className="text-xs text-teal-600 font-medium">
           {completed}/{DAILY_ITEMS.length}
         </span>

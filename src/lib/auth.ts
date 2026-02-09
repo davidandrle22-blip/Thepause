@@ -8,7 +8,7 @@ import { prisma } from "./prisma";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   trustHost: true,
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
   pages: {
     signIn: "/prihlaseni",
     newUser: "/registrace",
@@ -56,8 +56,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user, trigger }) {
+      if (user || trigger === "update") {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email! },
           select: { id: true, role: true, gender: true, goal: true },
@@ -67,6 +67,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.role = dbUser.role;
           token.gender = dbUser.gender;
           token.goal = dbUser.goal;
+
+          const paidOrder = await prisma.order.findFirst({
+            where: { userId: dbUser.id, status: "PAID" },
+            select: { plan: true },
+            orderBy: { createdAt: "desc" },
+          });
+          token.hasPaid = !!paidOrder;
+          token.paidPlan = paidOrder?.plan ?? null;
         }
       }
       return token;
@@ -77,6 +85,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.role = token.role as string;
         session.user.gender = token.gender as string | null;
         session.user.goal = token.goal as string | null;
+        session.user.hasPaid = token.hasPaid as boolean;
+        session.user.paidPlan = token.paidPlan as string | null;
       }
       return session;
     },

@@ -2,10 +2,10 @@
 
 const MILESTONES = [
   { day: 1, label: "Start", icon: "🌅" },
-  { day: 2, label: "Stena", icon: "🧱" },
+  { day: 2, label: "Stěna", icon: "🧱" },
   { day: 3, label: "Zlom", icon: "✨" },
   { day: 4, label: "Flow", icon: "🧬" },
-  { day: 5, label: "Cil", icon: "🏆" },
+  { day: 5, label: "Cíl", icon: "🏆" },
 ];
 
 export function ProgressBar({ completedPhases }: { completedPhases: number }) {
@@ -18,7 +18,7 @@ export function ProgressBar({ completedPhases }: { completedPhases: number }) {
   return (
     <div className="bg-white border border-teal-100 rounded-xl p-4 my-4">
       <div className="flex items-center justify-between mb-2">
-        <h4 className="text-sm font-bold text-navy-900">Pokrok pustem</h4>
+        <h4 className="text-sm font-bold text-navy-900">Pokrok půstem</h4>
         <span className="text-sm font-bold text-teal-600">{percentage}%</span>
       </div>
 

@@ -29,22 +29,22 @@ const testimonials = [
   {
     name: "Tomas R.",
     age: 52,
-    text: "Po letech se mi podarilo resetovat metabolismus. Inzulinova rezistence se vyrazne zlepsila. Investice 199 Kc, ktera se vyplatila tisickrat.",
-    result: "Zdravotni benefity",
+    text: "Po letech se mi podařilo resetovat metabolismus. Inzulínová rezistence se výrazně zlepšila. Investice 199 Kč, která se vyplatila tisíckrát.",
+    result: "Zdravotní benefity",
     avatar: "TR",
   },
   {
     name: "Lucie M.",
     age: 31,
-    text: "Vzdycky jsem se bala pustu, ale tento pruvodce mi dal jistotu. Kazda hodina je podrobne popsana a vedela jsem presne co ocekavat. Doporucuji vsem!",
+    text: "Vždycky jsem se bála půstu, ale tento průvodce mi dal jistotu. Každá hodina je podrobně popsána a věděla jsem přesně, co očekávat. Doporučuji všem!",
     result: "Zhubla 3,9 kg",
     avatar: "LM",
   },
   {
     name: "Jakub V.",
     age: 38,
-    text: "Nejlepsi investice do zdravi co jsem kdy udelal. Za 199 Kc dostanete pruvodce, ktery vam otevre oci. Po pustu jsem se citil o 10 let mladsi.",
-    result: "Kompletni regenerace",
+    text: "Nejlepší investice do zdraví, co jsem kdy udělal. Za 199 Kč dostanete průvodce, který vám otevře oči. Po půstu jsem se cítil o 10 let mladší.",
+    result: "Kompletní regenerace",
     avatar: "JV",
   },
 ];
@@ -67,7 +67,7 @@ export function TestimonialsSection() {
             Co říkají ostatní?
           </h2>
           <p className="text-lg text-navy-600 max-w-2xl mx-auto mb-3">
-            Tisice lidi uz zvladly svuj 5denni vodni pust s nasim pruvodcem.
+            Tisíce lidí už zvládly svůj 5denní vodní půst s naším průvodcem.
           </p>
           <div className="flex items-center justify-center gap-2">
             <div className="flex gap-0.5">
@@ -78,7 +78,7 @@ export function TestimonialsSection() {
               ))}
             </div>
             <span className="text-sm font-bold text-navy-700">4.9/5</span>
-            <span className="text-sm text-navy-500">(2 847+ hodnoceni)</span>
+            <span className="text-sm text-navy-500">(2 847+ hodnocení)</span>
           </div>
         </motion.div>
 

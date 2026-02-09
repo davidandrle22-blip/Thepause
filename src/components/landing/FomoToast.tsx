@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CITIES = [
-  "Praha", "Brno", "Ostrava", "Plzen", "Liberec", "Olomouc",
-  "Ceske Budejovice", "Hradec Kralove", "Usti nad Labem", "Pardubice",
-  "Zlin", "Karlovy Vary", "Jihlava", "Kladno", "Most",
+  "Praha", "Brno", "Ostrava", "Plzeň", "Liberec", "Olomouc",
+  "České Budějovice", "Hradec Králové", "Ústí nad Labem", "Pardubice",
+  "Zlín", "Karlovy Vary", "Jihlava", "Kladno", "Most",
 ];
 
 export function FomoToast() {
@@ -47,10 +47,10 @@ export function FomoToast() {
             </div>
             <div>
               <p className="text-sm font-medium text-navy-800">
-                Nekdo z mesta {city}
+                Někdo z města {city}
               </p>
               <p className="text-xs text-navy-500">
-                prave zakoupil pruvodce
+                právě zakoupil průvodce
               </p>
             </div>
           </div>

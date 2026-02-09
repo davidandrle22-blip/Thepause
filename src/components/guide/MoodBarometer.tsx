@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 
 const MOODS = [
-  { value: 1, emoji: "😫", label: "Spatne" },
+  { value: 1, emoji: "😫", label: "Špatně" },
   { value: 2, emoji: "😕", label: "Nic moc" },
-  { value: 3, emoji: "😐", label: "Neutralne" },
-  { value: 4, emoji: "🙂", label: "Dobre" },
-  { value: 5, emoji: "🤩", label: "Skvele" },
+  { value: 3, emoji: "😐", label: "Neutrálně" },
+  { value: 4, emoji: "🙂", label: "Dobře" },
+  { value: 5, emoji: "🤩", label: "Skvěle" },
 ];
 
 const LS_KEY = "the-pulse-mood-barometer";
@@ -37,7 +37,7 @@ export function MoodBarometer({ day }: { day: number }) {
   return (
     <div className="bg-purple-50/50 border border-purple-200 rounded-xl p-4 my-4">
       <h4 className="text-sm font-bold text-navy-900 mb-3">
-        Jak se dnes citite?
+        Jak se dnes cítíte?
       </h4>
       <div className="flex items-center justify-between gap-1 mb-4">
         {MOODS.map((m) => (

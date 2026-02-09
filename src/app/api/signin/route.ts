@@ -42,6 +42,12 @@ export async function POST(request: Request) {
       );
     }
 
+    const paidOrder = await prisma.order.findFirst({
+      where: { userId: user.id, status: "PAID" },
+      select: { plan: true },
+      orderBy: { createdAt: "desc" },
+    });
+
     const isProduction = process.env.NODE_ENV === "production";
     const cookieName = isProduction
       ? "__Secure-authjs.session-token"
@@ -57,6 +63,8 @@ export async function POST(request: Request) {
         role: user.role,
         gender: user.gender,
         goal: user.goal,
+        hasPaid: !!paidOrder,
+        paidPlan: paidOrder?.plan ?? null,
         sub: user.id,
       },
       secret: process.env.AUTH_SECRET!,

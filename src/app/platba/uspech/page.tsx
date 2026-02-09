@@ -4,11 +4,22 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/Mascot";
+import { Confetti } from "@/components/Confetti";
 
 export default function PlatbaUspechPage() {
   const [countdown, setCountdown] = useState(3);
+  const [refreshed, setRefreshed] = useState(false);
 
   useEffect(() => {
+    // Refresh JWT so hasPaid is set before navigating to /pruvodce
+    fetch("/api/auth/refresh-token", { method: "POST" })
+      .then(() => setRefreshed(true))
+      .catch(() => setRefreshed(true)); // proceed even if refresh fails
+  }, []);
+
+  useEffect(() => {
+    if (!refreshed) return;
+
     const timer = setInterval(() => {
       setCountdown((c) => {
         if (c <= 1) {
@@ -20,10 +31,11 @@ export default function PlatbaUspechPage() {
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [refreshed]);
 
   return (
     <div className="min-h-screen gradient-bg-light flex items-center justify-center px-4">
+      <Confetti />
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

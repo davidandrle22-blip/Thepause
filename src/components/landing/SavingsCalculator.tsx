@@ -40,10 +40,10 @@ export function SavingsCalculator() {
           className="text-center mb-10"
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-navy-900 mb-3">
-            💰 Kolik usetrite za 5 dni bez jidla?
+            Kolik ušetříte za 5 dní bez jídla?
           </h2>
           <p className="text-lg text-navy-600">
-            Zadejte kolik denne utratite za jidlo
+            Zadejte, kolik denně utratíte za jídlo
           </p>
         </motion.div>
 
@@ -57,10 +57,10 @@ export function SavingsCalculator() {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-3">
               <label className="text-sm font-medium text-navy-700">
-                Denni utrata za jidlo
+                Denní útrata za jídlo
               </label>
               <span className="text-2xl font-bold text-navy-900">
-                {dailyCost} Kc
+                {dailyCost} Kč
               </span>
             </div>
             <input
@@ -73,8 +73,8 @@ export function SavingsCalculator() {
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-500"
             />
             <div className="flex justify-between text-xs text-navy-400 mt-1">
-              <span>100 Kc</span>
-              <span>500 Kc</span>
+              <span>100 Kč</span>
+              <span>500 Kč</span>
             </div>
           </div>
 
@@ -82,28 +82,28 @@ export function SavingsCalculator() {
           <div className="grid sm:grid-cols-3 gap-4 mb-6">
             <div className="bg-green-50 rounded-xl p-5 text-center">
               <div className="text-3xl font-bold text-green-600">
-                {animatedValue} Kc
+                {animatedValue} Kč
               </div>
-              <div className="text-sm text-green-700 mt-1">Usporite za jidlo</div>
+              <div className="text-sm text-green-700 mt-1">Ušetříte za jídlo</div>
             </div>
             <div className="bg-gray-50 rounded-xl p-5 text-center">
               <div className="text-3xl font-bold text-navy-600">
-                -{guidePrice} Kc
+                -{guidePrice} Kč
               </div>
-              <div className="text-sm text-navy-500 mt-1">Cena pruvodce</div>
+              <div className="text-sm text-navy-500 mt-1">Cena průvodce</div>
             </div>
             <div className="bg-teal-50 rounded-xl p-5 text-center border-2 border-teal-200">
               <div className="text-3xl font-bold text-teal-600">
-                +{Math.max(0, netSaved)} Kc
+                +{Math.max(0, netSaved)} Kč
               </div>
-              <div className="text-sm text-teal-700 mt-1 font-medium">Ciste usetreno!</div>
+              <div className="text-sm text-teal-700 mt-1 font-medium">Čistě ušetřeno!</div>
             </div>
           </div>
 
           <p className="text-center text-sm text-navy-600">
-            Usetrite <strong className="text-green-600">{totalSaved} Kc</strong>,
-            pruvodce stoji pouze <strong>{guidePrice} Kc</strong> —{" "}
-            <strong className="text-teal-600">vydelali jste {Math.max(0, netSaved)} Kc!</strong>
+            Ušetříte <strong className="text-green-600">{totalSaved} Kč</strong>,
+            průvodce stojí pouze <strong>{guidePrice} Kč</strong> —{" "}
+            <strong className="text-teal-600">vydělali jste {Math.max(0, netSaved)} Kč!</strong>
           </p>
         </motion.div>
       </div>

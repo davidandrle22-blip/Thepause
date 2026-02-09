@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useInView, animate } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
 function AnimatedCounter({ target, suffix = "", prefix = "" }: { target: number; suffix?: string; prefix?: string }) {
@@ -10,13 +10,12 @@ function AnimatedCounter({ target, suffix = "", prefix = "" }: { target: number;
 
   useEffect(() => {
     if (!isInView) return;
-    const motionVal = useMotionValue(0);
-    const unsubscribe = motionVal.on("change", (v) => setCount(Math.round(v)));
-    const controls = animate(motionVal, target, { duration: 2, ease: "easeOut" });
-    return () => {
-      controls.stop();
-      unsubscribe();
-    };
+    const controls = animate(0, target, {
+      duration: 2,
+      ease: "easeOut",
+      onUpdate: (v) => setCount(Math.round(v)),
+    });
+    return () => controls.stop();
   }, [isInView, target]);
 
   return (

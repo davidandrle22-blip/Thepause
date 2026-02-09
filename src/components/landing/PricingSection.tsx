@@ -51,10 +51,10 @@ export function PricingSection() {
                 <div className="mb-6 flex items-center gap-3">
                   <div>
                     <span className="text-sm text-navy-400 line-through mr-2">
-                      399 Kc
+                      399 Kč
                     </span>
                     <span className="text-4xl font-bold text-navy-900">199</span>
-                    <span className="text-lg text-navy-600 ml-1">Kc</span>
+                    <span className="text-lg text-navy-600 ml-1">Kč</span>
                   </div>
                   <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                     Sleva 50%
@@ -125,10 +125,10 @@ export function PricingSection() {
                 <div className="mb-6 flex items-center gap-3">
                   <div>
                     <span className="text-sm text-navy-400 line-through mr-2">
-                      599 Kc
+                      599 Kč
                     </span>
                     <span className="text-4xl font-bold text-navy-900">298</span>
-                    <span className="text-lg text-navy-600 ml-1">Kc</span>
+                    <span className="text-lg text-navy-600 ml-1">Kč</span>
                   </div>
                   <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                     Sleva 50%

@@ -13,6 +13,8 @@ import { DailyChecklist } from "@/components/guide/DailyChecklist";
 import { MoodBarometer } from "@/components/guide/MoodBarometer";
 import { ProgressBar } from "@/components/guide/ProgressBar";
 import { GuideSavingsCalculator } from "@/components/guide/SavingsCalculator";
+import { DeviceGate } from "@/components/DeviceGate";
+import { GuardedContent } from "@/components/GuardedContent";
 
 type TabKey = "body" | "science" | "feelings" | "challenge";
 
@@ -606,6 +608,16 @@ function TabChallenge({
 // --- Main page ---
 
 export default function PruvodcePage() {
+  return (
+    <DeviceGate>
+      <GuardedContent>
+        <PruvodceContent />
+      </GuardedContent>
+    </DeviceGate>
+  );
+}
+
+function PruvodceContent() {
   const [activePhase, setActivePhase] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<Record<string, TabKey>>({});
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
@@ -982,6 +994,13 @@ export default function PruvodcePage() {
 
         {/* Bottom disclaimer */}
         <DisclaimerBox />
+
+        {/* License notice */}
+        <div className="text-center py-4 border-t border-teal-100 mt-8">
+          <p className="text-xs text-navy-400">
+            &copy; The-Pulse.cz | Tento obsah je licencován výhradně pro vás. Neoprávněné šíření je zakázáno.
+          </p>
+        </div>
 
         {/* Footer CTA */}
         <div className="text-center pb-12">

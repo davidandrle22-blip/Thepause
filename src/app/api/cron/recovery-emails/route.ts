@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     if (!order.user?.email) continue;
 
     try {
-      const plan = order.plan === "PREMIUM" ? "Pruvodce + Odznak" : "Zakladni pruvodce";
+      const plan = order.plan === "PREMIUM" ? "Průvodce + Odznak" : "Základní průvodce";
       await sendRecoveryEmail({
         customerName: order.user.name || "",
         customerEmail: order.user.email,

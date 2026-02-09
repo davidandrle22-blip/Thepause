@@ -59,9 +59,9 @@ export function HeroSection() {
             transition={{ duration: 0.8 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white"
           >
-            Kazdy si muze pomoci
+            Každý si může pomoci
             <br />
-            <span className="text-teal-300">skrze pust</span>
+            <span className="text-teal-300">skrze půst</span>
           </motion.h1>
 
           <motion.p
@@ -70,8 +70,8 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg text-white/90 mb-8 max-w-2xl leading-relaxed"
           >
-            Objevte silu vodniho pustu — 5denni pruvodce, ktery zmeni vas pohled
-            na zdravi, energii a sebekontrolu.
+            Objevte sílu vodního půstu — 5denní průvodce, který změní váš pohled
+            na zdraví, energii a sebekontrolu.
           </motion.p>
 
           <motion.div

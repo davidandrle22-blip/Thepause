@@ -39,24 +39,24 @@ export function GuideSavingsCalculator() {
   return (
     <div ref={ref} className="bg-green-50 border border-green-200 rounded-xl p-4 my-4">
       <h4 className="text-sm font-bold text-navy-900 mb-2">
-        💰 Kolik usetrite?
+        Kolik ušetříte?
       </h4>
       <div className="grid grid-cols-3 gap-2 text-center">
         <div>
           <div className="text-lg font-bold text-green-600">
-            {displayedSaved} Kc
+            {displayedSaved} Kč
           </div>
-          <div className="text-[10px] text-navy-500">Uspora za jidlo</div>
+          <div className="text-[10px] text-navy-500">Úspora za jídlo</div>
         </div>
         <div>
-          <div className="text-lg font-bold text-navy-600">-{guidePrice} Kc</div>
-          <div className="text-[10px] text-navy-500">Cena pruvodce</div>
+          <div className="text-lg font-bold text-navy-600">-{guidePrice} Kč</div>
+          <div className="text-[10px] text-navy-500">Cena průvodce</div>
         </div>
         <div>
           <div className="text-lg font-bold text-green-700">
-            +{netSaved > 0 ? netSaved : 0} Kc
+            +{netSaved > 0 ? netSaved : 0} Kč
           </div>
-          <div className="text-[10px] text-navy-500">Ciste usetreno</div>
+          <div className="text-[10px] text-navy-500">Čistě ušetřeno</div>
         </div>
       </div>
     </div>

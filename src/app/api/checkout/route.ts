@@ -101,6 +101,8 @@ export async function GET(request: Request) {
         },
       ],
       customer_email: user.email!,
+      locale: "cs",
+      allow_promotion_codes: true,
       metadata: {
         userId: user.id,
         plan: planKey,
