@@ -58,23 +58,48 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user, trigger }) {
       if (user || trigger === "update") {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: token.email! },
-          select: { id: true, role: true, gender: true, goal: true },
-        });
-        if (dbUser) {
-          token.id = dbUser.id;
-          token.role = dbUser.role;
-          token.gender = dbUser.gender;
-          token.goal = dbUser.goal;
+        try {
+          // Use user.id when available (sign-in), fall back to token for updates
+          const userId = user?.id ?? (token.id as string) ?? token.sub;
+          const email = user?.email ?? token.email;
 
-          const paidOrder = await prisma.order.findFirst({
-            where: { userId: dbUser.id, status: "PAID" },
-            select: { plan: true },
-            orderBy: { createdAt: "desc" },
-          });
-          token.hasPaid = !!paidOrder;
-          token.paidPlan = paidOrder?.plan ?? null;
+          const dbUser = userId
+            ? await prisma.user.findUnique({
+                where: { id: userId },
+                select: { id: true, role: true, gender: true, goal: true },
+              })
+            : email
+              ? await prisma.user.findUnique({
+                  where: { email },
+                  select: { id: true, role: true, gender: true, goal: true },
+                })
+              : null;
+
+          if (dbUser) {
+            token.id = dbUser.id;
+            token.role = dbUser.role;
+            token.gender = dbUser.gender;
+            token.goal = dbUser.goal;
+
+            const paidOrder = await prisma.order.findFirst({
+              where: { userId: dbUser.id, status: "PAID" },
+              select: { plan: true },
+              orderBy: { createdAt: "desc" },
+            });
+            token.hasPaid = !!paidOrder;
+            token.paidPlan = paidOrder?.plan ?? null;
+          } else {
+            // Fallback: set defaults for new users
+            if (user?.id) token.id = user.id;
+            token.hasPaid = false;
+            token.paidPlan = null;
+          }
+        } catch (error) {
+          console.error("JWT callback error:", error);
+          // Set safe defaults so auth doesn't break
+          if (user?.id) token.id = user.id;
+          token.hasPaid = token.hasPaid ?? false;
+          token.paidPlan = token.paidPlan ?? null;
         }
       }
       return token;
