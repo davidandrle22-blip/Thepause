@@ -48,7 +48,7 @@ export default function PlatbaZrusenoPage() {
             </a>
           </p>
           <p className="text-xs text-navy-400 mt-2">
-            Přes 2 800 spokojených zákazníků
+            Přes 2 800+ spokojených zákazníků
           </p>
         </div>
       </motion.div>
