@@ -86,7 +86,7 @@ function ObjednavkaContent() {
 
     // Test mode — skip Stripe
     if (isTestMode) {
-      router.push("/platba/uspech");
+      router.push(`/platba/uspech?bypass=true&email=${encodeURIComponent(email)}&plan=${plan}`);
       return;
     }
 

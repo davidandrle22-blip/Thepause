@@ -32,6 +32,7 @@ type PaymentData = {
 function UspechContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const isBypass = searchParams.get("bypass") === "true";
 
   const [verifying, setVerifying] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
@@ -47,6 +48,18 @@ function UspechContent() {
 
   // Verify payment on mount
   useEffect(() => {
+    // Bypass mode — skip Stripe verification
+    if (isBypass) {
+      setPaymentData({
+        paid: true,
+        email: searchParams.get("email") || "",
+        plan: searchParams.get("plan") || "BASIC",
+        name: "",
+      });
+      setVerifying(false);
+      return;
+    }
+
     if (!sessionId) {
       setVerifyError("Chybí identifikátor platby.");
       setVerifying(false);
@@ -67,7 +80,7 @@ function UspechContent() {
         setVerifyError("Nepodařilo se ověřit platbu.");
         setVerifying(false);
       });
-  }, [sessionId]);
+  }, [sessionId, isBypass, searchParams]);
 
   // Countdown after registration
   useEffect(() => {
