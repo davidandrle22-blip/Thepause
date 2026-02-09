@@ -136,32 +136,22 @@ function UspechContent() {
         }
       }
 
-      // Sign in (with new password for new users, existing password for existing users)
-      const signInRes = await fetch("/api/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: paymentData?.email,
-          password,
-        }),
+      // Sign in via NextAuth (properly sets JWT cookie + JWT callback auto-links orders + sets hasPaid)
+      const result = await signIn("credentials", {
+        email: paymentData?.email,
+        password,
+        redirect: false,
       });
 
-      if (!signInRes.ok) {
-        const signInData = await signInRes.json();
+      if (result?.error) {
         setRegError(
           existingUser
             ? "Nesprávné heslo. Zadejte heslo ke svému stávajícímu účtu."
-            : signInData.error || "Přihlášení selhalo."
+            : "Přihlášení selhalo."
         );
         setRegistering(false);
         return;
       }
-
-      // Link order to user
-      await fetch("/api/link-order", { method: "POST" });
-
-      // Refresh JWT so hasPaid is set
-      await fetch("/api/auth/refresh-token", { method: "POST" });
 
       setDone(true);
     } catch {
