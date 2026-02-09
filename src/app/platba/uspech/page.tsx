@@ -41,6 +41,7 @@ function UspechContent() {
   const [password, setPassword] = useState("");
   const [registering, setRegistering] = useState(false);
   const [regError, setRegError] = useState("");
+  const [existingUser, setExistingUser] = useState(false);
   const [done, setDone] = useState(false);
   const [countdown, setCountdown] = useState(3);
 
@@ -90,29 +91,39 @@ function UspechContent() {
     setRegistering(true);
 
     try {
-      // 1. Register
-      const regRes = await fetch("/api/registrace", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: paymentData?.name || "",
-          email: paymentData?.email,
-          password,
-          gender: "",
-          goal: "",
-        }),
-      });
+      // If not already known as existing user, try to register first
+      if (!existingUser) {
+        const regRes = await fetch("/api/registrace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: paymentData?.name || "",
+            email: paymentData?.email,
+            password,
+            gender: "",
+            goal: "",
+          }),
+        });
 
-      const regData = await regRes.json();
+        const regData = await regRes.json();
 
-      // 409 = user already exists, that's OK — they just need to sign in
-      if (!regRes.ok && regRes.status !== 409) {
-        setRegError(regData.error || "Chyba při registraci.");
-        setRegistering(false);
-        return;
+        if (regRes.status === 409) {
+          // User already exists — switch to "existing user" mode
+          setExistingUser(true);
+          setPassword("");
+          setRegError("");
+          setRegistering(false);
+          return;
+        }
+
+        if (!regRes.ok) {
+          setRegError(regData.error || "Chyba při registraci.");
+          setRegistering(false);
+          return;
+        }
       }
 
-      // 2. Sign in
+      // Sign in (with new password for new users, existing password for existing users)
       const signInRes = await fetch("/api/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -124,15 +135,19 @@ function UspechContent() {
 
       if (!signInRes.ok) {
         const signInData = await signInRes.json();
-        setRegError(signInData.error || "Přihlášení selhalo.");
+        setRegError(
+          existingUser
+            ? "Nesprávné heslo. Zadejte heslo ke svému stávajícímu účtu."
+            : signInData.error || "Přihlášení selhalo."
+        );
         setRegistering(false);
         return;
       }
 
-      // 3. Link order to user
+      // Link order to user
       await fetch("/api/link-order", { method: "POST" });
 
-      // 4. Refresh JWT so hasPaid is set
+      // Refresh JWT so hasPaid is set
       await fetch("/api/auth/refresh-token", { method: "POST" });
 
       setDone(true);
@@ -214,7 +229,7 @@ function UspechContent() {
               </svg>
             </div>
             <h1 className="text-2xl font-bold text-navy-900 mb-2">
-              Účet vytvořen!
+              {existingUser ? "Přihlášení úspěšné!" : "Účet vytvořen!"}
             </h1>
             <p className="text-navy-600 mb-6">
               Přesměrování na průvodce za {countdown}s...
@@ -266,7 +281,9 @@ function UspechContent() {
             Platba úspěšná!
           </h1>
           <p className="text-navy-600 mb-6">
-            Nyní si vytvořte účet pro přístup k průvodci
+            {existingUser
+              ? "Účet s tímto emailem již existuje. Přihlaste se svým stávajícím heslem."
+              : "Nyní si vytvořte účet pro přístup k průvodci"}
           </p>
 
           {paymentData && (
@@ -295,7 +312,7 @@ function UspechContent() {
                 htmlFor="password"
                 className="block text-sm font-medium text-navy-700 mb-1"
               >
-                Vytvořte si heslo *
+                {existingUser ? "Vaše stávající heslo *" : "Vytvořte si heslo *"}
               </label>
               <input
                 id="password"
@@ -308,7 +325,9 @@ function UspechContent() {
                 placeholder="Alespoň 6 znaků"
               />
               <p className="text-xs text-navy-500 mt-1">
-                Heslo k účtu {paymentData?.email}
+                {existingUser
+                  ? `Zadejte heslo k účtu ${paymentData?.email}`
+                  : `Heslo k účtu ${paymentData?.email}`}
               </p>
             </div>
 
@@ -317,7 +336,9 @@ function UspechContent() {
               disabled={registering || password.length < 6}
               className="w-full bg-teal-600 hover:bg-teal-700 text-white py-6 rounded-xl text-base font-medium shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
             >
-              {registering ? "Vytvářím účet..." : "Vytvořit účet a otevřít průvodce"}
+              {registering
+                ? (existingUser ? "Přihlašuji..." : "Vytvářím účet...")
+                : (existingUser ? "Přihlásit se a otevřít průvodce" : "Vytvořit účet a otevřít průvodce")}
             </Button>
           </form>
 
@@ -357,9 +378,11 @@ function UspechContent() {
             </span>
           </button>
 
-          <p className="text-xs text-navy-400 mt-4">
-            Již máte účet? Zadejte své stávající heslo výše.
-          </p>
+          {!existingUser && (
+            <p className="text-xs text-navy-400 mt-4">
+              Již máte účet? Zadejte své stávající heslo výše.
+            </p>
+          )}
         </div>
       </motion.div>
     </div>
