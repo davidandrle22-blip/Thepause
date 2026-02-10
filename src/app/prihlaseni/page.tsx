@@ -19,7 +19,9 @@ export default function PrihlaseniPage() {
   // Redirect logged-in users
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
-      if (session.user.hasPaid) {
+      if (session.user.role === "ADMIN") {
+        router.replace("/admin");
+      } else if (session.user.hasPaid) {
         router.replace("/pruvodce");
       } else {
         router.replace("/objednavka");
@@ -45,7 +47,8 @@ export default function PrihlaseniPage() {
         return;
       }
 
-      window.location.href = "/pruvodce";
+      // Session updates → useEffect handles redirect based on role/hasPaid
+      // Keep loading state so user sees spinner until redirect happens
     } catch {
       setError("Došlo k chybě při přihlášení. Zkuste to znovu.");
       setLoading(false);

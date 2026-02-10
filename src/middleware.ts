@@ -15,6 +15,9 @@ export async function middleware(request: NextRequest) {
 
   // Logged-in user on login page — redirect away
   if (pathname === "/prihlaseni" && token) {
+    if (token.role === "ADMIN") {
+      return NextResponse.redirect(new URL("/admin", request.url));
+    }
     if (token.hasPaid) {
       return NextResponse.redirect(new URL("/pruvodce", request.url));
     }
