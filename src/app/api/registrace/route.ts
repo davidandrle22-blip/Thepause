@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -48,7 +50,8 @@ export async function POST(request: Request) {
       { user: { id: user.id, email: user.email, name: user.name } },
       { status: 201 }
     );
-  } catch {
+  } catch (error) {
+    console.error("Registration error:", error);
     return NextResponse.json(
       { error: "Došlo k chybě při registraci" },
       { status: 500 }
