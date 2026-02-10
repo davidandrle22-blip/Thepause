@@ -6,23 +6,16 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-/**
- * Get user ID from session — tries auth() first, then getToken() as fallback.
- * This ensures compatibility with both NextAuth-created sessions and our
- * custom /api/signin JWT.
- */
 async function getUserFromRequest(request: Request) {
-  // Try auth() first (works for NextAuth native sessions like Google OAuth)
   try {
     const session = await auth();
     if (session?.user?.id) {
       return { id: session.user.id, email: session.user.email };
     }
   } catch {
-    // auth() failed, try fallback
+    // auth() failed, try getToken fallback
   }
 
-  // Fallback: decode JWT directly (works for our custom /api/signin tokens)
   try {
     const token = await getToken({
       req: request,

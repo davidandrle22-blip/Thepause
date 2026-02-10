@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function PropojeniPage() {
   return (
@@ -20,16 +21,14 @@ export default function PropojeniPage() {
 function PropojeniContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const { update } = useSession();
   const [status, setStatus] = useState<"linking" | "done" | "error">("linking");
 
   useEffect(() => {
     async function linkAndRedirect() {
       try {
-        // Link orphaned orders to the now-authenticated user
-        await fetch("/api/link-order", { method: "POST" });
-
-        // Refresh JWT so hasPaid is set
-        await fetch("/api/auth/refresh-token", { method: "POST" });
+        // Trigger session update — JWT callback auto-links orphaned orders and sets hasPaid
+        await update();
 
         setStatus("done");
 
@@ -41,7 +40,7 @@ function PropojeniContent() {
     }
 
     linkAndRedirect();
-  }, [sessionId]);
+  }, [sessionId, update]);
 
   if (status === "error") {
     return (

@@ -1,9 +1,21 @@
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+async function checkAdmin(request: Request) {
+  const token = await getToken({ req: request as any, secret: process.env.AUTH_SECRET });
+  if (!token || token.role !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+  return null;
+}
+
+export async function GET(request: Request) {
+  const forbidden = await checkAdmin(request);
+  if (forbidden) return forbidden;
+
   try {
     const discounts = await prisma.discountCode.findMany({
       orderBy: { createdAt: "desc" },
@@ -33,6 +45,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const forbidden = await checkAdmin(request);
+  if (forbidden) return forbidden;
+
   try {
     const body = await request.json();
     const { code, discountType, discountValue, maxUses } = body;

@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const token = await getToken({ req: request as any, secret: process.env.AUTH_SECRET });
+  if (!token || token.role !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   try {
     const [totalUsers, totalOrders, paidOrders, revenue] = await Promise.all([
       prisma.user.count(),
