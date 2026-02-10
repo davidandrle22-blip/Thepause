@@ -13,6 +13,14 @@ export async function middleware(request: NextRequest) {
     secureCookie,
   });
 
+  // Logged-in user on login page — redirect away
+  if (pathname === "/prihlaseni" && token) {
+    if (token.hasPaid) {
+      return NextResponse.redirect(new URL("/pruvodce", request.url));
+    }
+    return NextResponse.redirect(new URL("/objednavka", request.url));
+  }
+
   // Protected routes — require authentication + paid order
   if (pathname.startsWith("/pruvodce") || pathname.startsWith("/odznak")) {
     if (!token && !bypass) {
@@ -34,5 +42,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/pruvodce/:path*", "/odznak/:path*", "/admin/:path*"],
+  matcher: ["/prihlaseni", "/pruvodce/:path*", "/odznak/:path*", "/admin/:path*"],
 };

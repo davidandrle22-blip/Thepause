@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/Mascot";
@@ -28,7 +29,10 @@ type Goal = "WEIGHT_LOSS" | "MENTAL_RESET" | "PHYSICAL_REGENERATION" | null;
 function ObjednavkaContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { data: session, status: sessionStatus, update: updateSession } = useSession();
   const initialPlan = searchParams.get("plan") || "basic";
+
+  const isAuthenticated = sessionStatus === "authenticated" && !!session?.user;
 
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1);
@@ -58,6 +62,33 @@ function ObjednavkaContent() {
       })
       .catch(() => {});
   }, []);
+
+  // Pre-fill from Google session
+  useEffect(() => {
+    if (isAuthenticated && session.user) {
+      // If already paid, redirect to guide
+      if (session.user.hasPaid) {
+        router.replace("/pruvodce");
+        return;
+      }
+      // Pre-fill name from Google profile
+      if (session.user.name && !name) {
+        setName(session.user.name);
+      }
+      // Pre-fill email from session
+      if (session.user.email && !email) {
+        setEmail(session.user.email);
+      }
+      // Pre-fill gender/goal if already set
+      if (session.user.gender && !gender) {
+        setGender(session.user.gender as Gender);
+      }
+      if (session.user.goal && !goal) {
+        setGoal(session.user.goal as Goal);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, session]);
 
   const canProceedStep1 = name.trim().length > 0 && gender !== null;
   const canProceedStep2 = goal !== null;
@@ -93,6 +124,20 @@ function ObjednavkaContent() {
     }
 
     try {
+      // Authenticated user (Google) — save onboarding data, then use authenticated checkout
+      if (isAuthenticated) {
+        // Save onboarding data
+        await fetch("/api/onboarding", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ displayName: name, gender, goal }),
+        });
+        // Redirect to authenticated checkout (GET redirect)
+        window.location.href = `/api/checkout?plan=${plan}`;
+        return;
+      }
+
+      // Anonymous user — use create-checkout with email
       const res = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -669,23 +714,37 @@ function ObjednavkaContent() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-navy-700 mb-1"
-                    >
-                      Email *
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      required={!isTestMode}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                      placeholder="jan@email.cz"
-                    />
-                  </div>
+                  {isAuthenticated ? (
+                    <div className="bg-teal-50 rounded-xl p-4 flex items-center gap-3">
+                      <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg className="w-4 h-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-teal-800">Přihlášen/a jako</p>
+                        <p className="text-sm text-teal-700">{session?.user?.email}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-navy-700 mb-1"
+                      >
+                        Email *
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        required={!isTestMode}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
+                        placeholder="jan@email.cz"
+                      />
+                    </div>
+                  )}
 
                   <div className="space-y-3 border-t border-gray-100 pt-4">
                     <div className={`flex items-start gap-3 p-3 rounded-lg border transition-colors ${

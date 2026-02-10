@@ -9,6 +9,7 @@ declare module "next-auth" {
       goal: string | null;
       hasPaid: boolean;
       paidPlan: string | null;
+      onboardingCompleted: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -21,5 +22,6 @@ declare module "next-auth/jwt" {
     goal: string | null;
     hasPaid: boolean;
     paidPlan: string | null;
+    onboardingCompleted: boolean;
   }
 }

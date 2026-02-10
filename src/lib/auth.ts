@@ -121,12 +121,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const dbUser = userId
             ? await prisma.user.findUnique({
                 where: { id: userId },
-                select: { id: true, role: true, gender: true, goal: true },
+                select: { id: true, role: true, gender: true, goal: true, onboardingCompleted: true },
               })
             : email
               ? await prisma.user.findUnique({
                   where: { email },
-                  select: { id: true, role: true, gender: true, goal: true },
+                  select: { id: true, role: true, gender: true, goal: true, onboardingCompleted: true },
                 })
               : null;
 
@@ -135,6 +135,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             token.role = dbUser.role;
             token.gender = dbUser.gender;
             token.goal = dbUser.goal;
+            token.onboardingCompleted = dbUser.onboardingCompleted;
 
             // Auto-link orphaned orders (paid before registration)
             if (email) {
@@ -175,6 +176,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.goal = token.goal as string | null;
         session.user.hasPaid = token.hasPaid as boolean;
         session.user.paidPlan = token.paidPlan as string | null;
+        session.user.onboardingCompleted = token.onboardingCompleted as boolean;
       }
       return session;
     },

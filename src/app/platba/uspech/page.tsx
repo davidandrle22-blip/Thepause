@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/Mascot";
@@ -31,8 +31,11 @@ type PaymentData = {
 
 function UspechContent() {
   const searchParams = useSearchParams();
+  const { data: session, status: sessionStatus, update: updateSession } = useSession();
   const sessionId = searchParams.get("session_id");
   const isBypass = searchParams.get("bypass") === "true";
+
+  const isAuthenticated = sessionStatus === "authenticated" && !!session?.user;
 
   const [verifying, setVerifying] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
@@ -81,6 +84,17 @@ function UspechContent() {
         setVerifying(false);
       });
   }, [sessionId, isBypass, searchParams]);
+
+  // Auto-redirect for authenticated users (Google sign-in) — skip registration
+  useEffect(() => {
+    if (isAuthenticated && paymentData?.paid && !done) {
+      // Trigger session update so JWT callback refreshes hasPaid
+      updateSession().then(() => {
+        setDone(true);
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, paymentData, done]);
 
   // Countdown after registration
   useEffect(() => {

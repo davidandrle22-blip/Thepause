@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -10,10 +10,22 @@ import Link from "next/link";
 
 export default function PrihlaseniPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Redirect logged-in users
+  useEffect(() => {
+    if (status === "authenticated" && session?.user) {
+      if (session.user.hasPaid) {
+        router.replace("/pruvodce");
+      } else {
+        router.replace("/objednavka");
+      }
+    }
+  }, [status, session, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,7 +134,7 @@ export default function PrihlaseniPage() {
           </div>
 
           <button
-            onClick={() => signIn("google", { callbackUrl: "/pruvodce" })}
+            onClick={() => signIn("google", { callbackUrl: "/objednavka" })}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
