@@ -23,25 +23,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Heslo", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        if (!credentials?.email) {
           return null;
         }
+
+        const email = credentials.email as string;
+        const password = credentials.password as string | undefined;
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
+          where: { email },
         });
 
-        if (!user || !user.password) {
+        if (!user) {
           return null;
         }
 
-        const isValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
-
-        if (!isValid) {
-          return null;
+        // With password → full auth (admin or regular user)
+        if (password) {
+          if (!user.password) return null;
+          const isValid = await bcrypt.compare(password, user.password);
+          if (!isValid) return null;
+        } else {
+          // Without password → only allow users with a PAID order
+          const paidOrder = await prisma.order.findFirst({
+            where: { userId: user.id, status: "PAID" },
+          });
+          if (!paidOrder) return null;
         }
 
         return {

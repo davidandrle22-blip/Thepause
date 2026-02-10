@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useSession, signOut } from "next-auth/react";
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-teal-100">
@@ -44,16 +46,36 @@ export function Header() {
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/prihlaseni">
-              <Button variant="ghost" size="sm" className="text-navy-700">
-                Přihlásit se
-              </Button>
-            </Link>
-            <Link href="/objednavka">
-              <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white">
-                Začít půst
-              </Button>
-            </Link>
+            {session?.user ? (
+              <>
+                <Link href={session.user.role === "ADMIN" ? "/admin" : "/pruvodce"}>
+                  <Button variant="ghost" size="sm" className="text-navy-700">
+                    {session.user.role === "ADMIN" ? "Admin" : "Průvodce"}
+                  </Button>
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-navy-500"
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                >
+                  Odhlásit se
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link href="/prihlaseni">
+                  <Button variant="ghost" size="sm" className="text-navy-700">
+                    Přihlásit se
+                  </Button>
+                </Link>
+                <Link href="/objednavka">
+                  <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white">
+                    Začít půst
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu toggle */}
@@ -96,16 +118,36 @@ export function Header() {
                 Ceník
               </a>
               <div className="flex gap-2 pt-2">
-                <Link href="/prihlaseni" className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full">
-                    Přihlásit se
-                  </Button>
-                </Link>
-                <Link href="/objednavka" className="flex-1">
-                  <Button size="sm" className="w-full bg-teal-600 hover:bg-teal-700 text-white">
-                    Začít půst
-                  </Button>
-                </Link>
+                {session?.user ? (
+                  <>
+                    <Link href={session.user.role === "ADMIN" ? "/admin" : "/pruvodce"} className="flex-1">
+                      <Button variant="outline" size="sm" className="w-full" onClick={() => setMobileOpen(false)}>
+                        {session.user.role === "ADMIN" ? "Admin" : "Průvodce"}
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 text-navy-500"
+                      onClick={() => { setMobileOpen(false); signOut({ callbackUrl: "/" }); }}
+                    >
+                      Odhlásit se
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/prihlaseni" className="flex-1">
+                      <Button variant="outline" size="sm" className="w-full">
+                        Přihlásit se
+                      </Button>
+                    </Link>
+                    <Link href="/objednavka" className="flex-1">
+                      <Button size="sm" className="w-full bg-teal-600 hover:bg-teal-700 text-white">
+                        Začít půst
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </motion.div>

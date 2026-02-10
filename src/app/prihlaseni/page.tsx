@@ -37,12 +37,16 @@ export default function PrihlaseniPage() {
     try {
       const result = await signIn("credentials", {
         email,
-        password,
+        password: password || undefined,
         redirect: false,
       });
 
       if (result?.error) {
-        setError("Nesprávný email nebo heslo.");
+        setError(
+          password
+            ? "Nesprávný email nebo heslo."
+            : "Účet nenalezen nebo nemá zaplacenou objednávku."
+        );
         setLoading(false);
         return;
       }
@@ -105,17 +109,19 @@ export default function PrihlaseniPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-navy-700 mb-1"
               >
-                Heslo
+                Heslo <span className="text-navy-400 font-normal">(pro admin)</span>
               </label>
               <input
                 id="password"
                 type="password"
-                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                placeholder="Vaše heslo"
+                placeholder="Jen pro administrátory"
               />
+              <p className="text-xs text-navy-400 mt-1">
+                Zaplacený účet? Stačí zadat jen email.
+              </p>
             </div>
 
             <Button
