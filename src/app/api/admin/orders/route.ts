@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { getToken } from "@/lib/get-token";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  const token = await getToken({ req: request as any, secret: process.env.AUTH_SECRET });
+  const token = await getToken(request);
   if (!token || token.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }

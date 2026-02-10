@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getToken } from "next-auth/jwt";
+import { getToken } from "@/lib/get-token";
 import { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,7 @@ function generateCertId(): string {
 }
 
 export async function POST(request: NextRequest) {
-  const token = await getToken({ req: request });
+  const token = await getToken(request);
   if (!token?.sub) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

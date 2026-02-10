@@ -6,9 +6,11 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const bypass = process.env.BYPASS_STRIPE === "true" || process.env.NEXT_PUBLIC_BYPASS_STRIPE === "true";
 
+  const secureCookie = request.nextUrl.protocol === "https:";
   const token = await getToken({
     req: request,
     secret: process.env.AUTH_SECRET,
+    secureCookie,
   });
 
   // Protected routes — require authentication + paid order

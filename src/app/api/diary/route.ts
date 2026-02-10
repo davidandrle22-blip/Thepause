@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { getToken } from "@/lib/get-token";
 import { prisma } from "@/lib/prisma";
 import { NextRequest } from "next/server";
 
@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
-    const token = await getToken({ req: request });
+    const token = await getToken(request);
     if (!token?.sub) {
       return NextResponse.json({ error: "Nepřihlášen" }, { status: 401 });
     }
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const token = await getToken({ req: request });
+    const token = await getToken(request);
     if (!token?.sub) {
       return NextResponse.json({ error: "Nepřihlášen" }, { status: 401 });
     }

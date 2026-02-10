@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { getToken } from "next-auth/jwt";
+import { getToken } from "@/lib/get-token";
 import { getStripe, PLANS } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 
@@ -17,10 +17,7 @@ async function getUserFromRequest(request: Request) {
   }
 
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.AUTH_SECRET!,
-    });
+    const token = await getToken(request);
     if (token?.id) {
       return { id: token.id as string, email: token.email as string };
     }

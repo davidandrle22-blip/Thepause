@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { getToken } from "@/lib/get-token";
 import { prisma } from "@/lib/prisma";
 import { getOrCreateDeviceId } from "@/lib/device-id";
 
@@ -19,10 +19,7 @@ function parseDeviceName(ua: string): string {
 
 export async function POST(request: Request) {
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.AUTH_SECRET,
-    });
+    const token = await getToken(request);
 
     if (!token?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -75,10 +72,7 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.AUTH_SECRET,
-    });
+    const token = await getToken(request);
 
     if (!token?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
