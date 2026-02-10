@@ -47,12 +47,14 @@ function ObjednavkaContent() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [testMode, setTestMode] = useState(process.env.NEXT_PUBLIC_BYPASS_STRIPE === "true");
+  const [prices, setPrices] = useState({ basic: "199", premium: "298" });
 
   useEffect(() => {
     fetch("/api/config")
       .then((r) => r.json())
       .then((data) => {
         if (data.bypassStripe) setTestMode(true);
+        if (data.priceBasic) setPrices({ basic: data.priceBasic, premium: data.pricePremium });
       })
       .catch(() => {});
   }, []);
@@ -589,7 +591,7 @@ function ObjednavkaContent() {
                       Průvodce
                     </div>
                     <div className="text-2xl font-bold text-navy-900">
-                      199{" "}
+                      {prices.basic}{" "}
                       <span className="text-sm font-normal text-navy-500">
                         Kč
                       </span>
@@ -632,7 +634,7 @@ function ObjednavkaContent() {
                       Komplet
                     </div>
                     <div className="text-2xl font-bold text-navy-900">
-                      298{" "}
+                      {prices.premium}{" "}
                       <span className="text-sm font-normal text-navy-500">
                         Kč
                       </span>
