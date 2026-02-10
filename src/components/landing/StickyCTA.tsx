@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { usePrices } from "@/components/PriceContext";
 
 export function StickyCTA() {
+  const prices = usePrices();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export function StickyCTA() {
               <div>
                 <p className="text-sm font-bold text-navy-800">
                   <span className="line-through text-navy-400 mr-1">499 Kč</span>
-                  199 Kč
+                  {prices.basic} Kč
                 </p>
                 <p className="text-xs text-navy-500">Interaktivní průvodce</p>
               </div>

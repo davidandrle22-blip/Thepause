@@ -3,8 +3,10 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { CONVERSION_CONFIG } from "@/config/conversion";
+import { usePrices } from "@/components/PriceContext";
 
 export function ValueBreakdown() {
+  const prices = usePrices();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -24,7 +26,7 @@ export function ValueBreakdown() {
             {/* Header */}
             <div className="bg-navy-900 px-6 py-5 sm:px-8">
               <h2 className="text-xl sm:text-2xl font-bold text-white text-center">
-                Co vše získáte za 199 Kč:
+                Co vše získáte za {prices.basic} Kč:
               </h2>
             </div>
 
@@ -79,7 +81,7 @@ export function ValueBreakdown() {
               </div>
               <div className="text-3xl sm:text-4xl font-bold text-navy-900">
                 Vaše cena:{" "}
-                <span className="text-teal-600">199 Kč</span>
+                <span className="text-teal-600">{prices.basic} Kč</span>
               </div>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}

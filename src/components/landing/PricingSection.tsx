@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { usePrices } from "@/components/PriceContext";
 
 export function PricingSection() {
+  const prices = usePrices();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -53,7 +55,7 @@ export function PricingSection() {
                     <span className="text-sm text-navy-400 line-through mr-2">
                       399 Kč
                     </span>
-                    <span className="text-4xl font-bold text-navy-900">199</span>
+                    <span className="text-4xl font-bold text-navy-900">{prices.basic}</span>
                     <span className="text-lg text-navy-600 ml-1">Kč</span>
                   </div>
                   <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
@@ -94,7 +96,7 @@ export function PricingSection() {
                     size="lg"
                     className="w-full bg-teal-600 hover:bg-teal-700 text-white text-lg py-6 rounded-xl"
                   >
-                    Získat průvodce za 199 Kč
+                    Získat průvodce za {prices.basic} Kč
                   </Button>
                 </Link>
               </CardContent>
@@ -127,7 +129,7 @@ export function PricingSection() {
                     <span className="text-sm text-navy-400 line-through mr-2">
                       599 Kč
                     </span>
-                    <span className="text-4xl font-bold text-navy-900">298</span>
+                    <span className="text-4xl font-bold text-navy-900">{prices.premium}</span>
                     <span className="text-lg text-navy-600 ml-1">Kč</span>
                   </div>
                   <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
@@ -166,7 +168,7 @@ export function PricingSection() {
                     size="lg"
                     className="w-full bg-gold-500 hover:bg-gold-600 text-navy-900 text-lg py-6 rounded-xl font-bold"
                   >
-                    Získat komplet za 298 Kč
+                    Získat komplet za {prices.premium} Kč
                   </Button>
                 </Link>
               </CardContent>

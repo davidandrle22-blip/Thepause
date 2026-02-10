@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePrices } from "@/components/PriceContext";
 
 export function UrgencyBar() {
+  const prices = usePrices();
   const [viewers, setViewers] = useState(0);
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
@@ -71,7 +73,7 @@ export function UrgencyBar() {
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          🔥 Akční cena 199 Kč — končí za{" "}
+          🔥 Akční cena {prices.basic} Kč — končí za{" "}
           <span className="font-mono font-bold text-gold-400">
             {String(timeLeft.hours).padStart(2, "0")}:
             {String(timeLeft.minutes).padStart(2, "0")}:

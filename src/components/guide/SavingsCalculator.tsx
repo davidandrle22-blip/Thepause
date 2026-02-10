@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePrices } from "@/components/PriceContext";
 
 export function GuideSavingsCalculator() {
+  const prices = usePrices();
   const [dailyCost] = useState(250);
   const totalSaved = dailyCost * 5;
-  const guidePrice = 199;
+  const guidePrice = Number(prices.basic) || 199;
   const netSaved = totalSaved - guidePrice;
 
   const [displayedSaved, setDisplayedSaved] = useState(0);

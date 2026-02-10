@@ -2,15 +2,17 @@
 
 import { motion, useInView } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import { usePrices } from "@/components/PriceContext";
 
 export function SavingsCalculator() {
+  const prices = usePrices();
   const [dailyCost, setDailyCost] = useState(250);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [animatedValue, setAnimatedValue] = useState(0);
 
   const totalSaved = dailyCost * 5;
-  const guidePrice = 199;
+  const guidePrice = Number(prices.basic) || 199;
   const netSaved = totalSaved - guidePrice;
 
   useEffect(() => {

@@ -3,10 +3,12 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/Mascot";
+import { usePrices } from "@/components/PriceContext";
 import Image from "next/image";
 import Link from "next/link";
 
 export function HeroSection() {
+  const prices = usePrices();
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Split screen background */}
@@ -85,7 +87,7 @@ export function HeroSection() {
                 size="lg"
                 className="bg-teal-500 hover:bg-teal-600 text-white text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all animate-pulse"
               >
-                Začít za 199 Kč
+                Začít za {prices.basic} Kč
                 <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>

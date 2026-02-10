@@ -2,35 +2,37 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-
-const ALTERNATIVES = [
-  {
-    name: "Nutriční poradce",
-    price: "1 500 – 3 000 Kč",
-    detail: "/ konzultace",
-    highlighted: false,
-  },
-  {
-    name: "Detoxikační program v lázních",
-    price: "5 000 – 15 000 Kč",
-    detail: "",
-    highlighted: false,
-  },
-  {
-    name: "Knihy o půstu",
-    price: "300 – 600 Kč",
-    detail: "(bez interaktivity)",
-    highlighted: false,
-  },
-  {
-    name: "The-Pulse.cz průvodce",
-    price: "pouze 199 Kč",
-    detail: "",
-    highlighted: true,
-  },
-];
+import { usePrices } from "@/components/PriceContext";
 
 export function ComparisonTable() {
+  const prices = usePrices();
+
+  const ALTERNATIVES = [
+    {
+      name: "Nutriční poradce",
+      price: "1 500 – 3 000 Kč",
+      detail: "/ konzultace",
+      highlighted: false,
+    },
+    {
+      name: "Detoxikační program v lázních",
+      price: "5 000 – 15 000 Kč",
+      detail: "",
+      highlighted: false,
+    },
+    {
+      name: "Knihy o půstu",
+      price: "300 – 600 Kč",
+      detail: "(bez interaktivity)",
+      highlighted: false,
+    },
+    {
+      name: "The-Pulse.cz průvodce",
+      price: `pouze ${prices.basic} Kč`,
+      detail: "",
+      highlighted: true,
+    },
+  ];
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
