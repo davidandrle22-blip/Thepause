@@ -21,15 +21,14 @@ export default function PrihlaseniPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || "Nesprávný email nebo heslo.");
+      if (result?.error) {
+        setError("Nesprávný email nebo heslo.");
         setLoading(false);
         return;
       }
