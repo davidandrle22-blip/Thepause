@@ -109,7 +109,7 @@ export default function PrihlaseniPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-navy-700 mb-1"
               >
-                Heslo <span className="text-navy-400 font-normal">(pro admin)</span>
+                Heslo <span className="text-navy-400 font-normal">(volitelné)</span>
               </label>
               <input
                 id="password"
@@ -117,7 +117,7 @@ export default function PrihlaseniPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                placeholder="Jen pro administrátory"
+                placeholder="Vyplňte pokud máte heslo"
               />
               <p className="text-xs text-navy-400 mt-1">
                 Zaplacený účet? Stačí zadat jen email.
