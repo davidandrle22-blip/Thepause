@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getToken } from "@/lib/get-token";
-import { getStripe, PLANS } from "@/lib/stripe";
+import { getStripe, PLANS, getPlanPrice } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -41,6 +41,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const planKey = searchParams.get("plan")?.toUpperCase() === "PREMIUM" ? "PREMIUM" : "BASIC";
   const plan = PLANS[planKey];
+  const price = await getPlanPrice(planKey, prisma);
 
   // Check if user already has a paid order for this plan
   const existingOrder = await prisma.order.findFirst({
@@ -61,7 +62,7 @@ export async function GET(request: Request) {
       data: {
         userId: user.id,
         plan: planKey,
-        amount: plan.price,
+        amount: price,
         stripeSessionId: `test_${Date.now()}`,
         status: "PAID",
       },
@@ -84,7 +85,7 @@ export async function GET(request: Request) {
               name: plan.name,
               description: plan.description,
             },
-            unit_amount: plan.price,
+            unit_amount: price,
           },
           quantity: 1,
         },
@@ -105,7 +106,7 @@ export async function GET(request: Request) {
       data: {
         userId: user.id,
         plan: planKey,
-        amount: plan.price,
+        amount: price,
         stripeSessionId: checkoutSession.id,
       },
     });

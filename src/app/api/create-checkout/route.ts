@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getStripe, PLANS } from "@/lib/stripe";
+import { getStripe, PLANS, getPlanPrice } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -15,6 +15,7 @@ export async function POST(request: Request) {
 
     const planKey = plan?.toUpperCase() === "PREMIUM" ? "PREMIUM" : "BASIC";
     const planData = PLANS[planKey];
+    const price = await getPlanPrice(planKey, prisma);
 
     const stripe = getStripe();
     const baseUrl = new URL(request.url).origin;
@@ -29,7 +30,7 @@ export async function POST(request: Request) {
               name: planData.name,
               description: planData.description,
             },
-            unit_amount: planData.price,
+            unit_amount: price,
           },
           quantity: 1,
         },
@@ -53,7 +54,7 @@ export async function POST(request: Request) {
       data: {
         email,
         plan: planKey,
-        amount: planData.price,
+        amount: price,
         stripeSessionId: checkoutSession.id,
       },
     });
