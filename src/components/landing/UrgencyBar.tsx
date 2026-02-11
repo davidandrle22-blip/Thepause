@@ -47,39 +47,28 @@ export function UrgencyBar() {
   const originalPrice = Math.round(currentPrice * 1.1);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[51] bg-navy-900 text-white py-2.5 text-center text-sm">
-      <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
+    <div className="fixed top-0 left-0 right-0 z-[51] bg-navy-900 text-white py-2 text-center text-xs sm:text-sm">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 flex items-center justify-center gap-x-4 sm:gap-x-6">
+        {/* Viewers - hidden on mobile */}
         <AnimatePresence mode="wait">
           <motion.span
             key={viewers}
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
-            className="flex items-center gap-1.5"
+            className="hidden sm:flex items-center gap-1.5"
           >
             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
             <span className="font-medium">{viewers} lidí</span> právě prohlíží
           </motion.span>
         </AnimatePresence>
-        <span className="text-navy-400">|</span>
-        <span className="flex items-center gap-1.5">
-          <svg
-            className="w-4 h-4 text-gold-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          🔥 SLEVA{" "}
-          <span className="line-through text-navy-400">{originalPrice} Kč</span>{" "}
+        <span className="hidden sm:inline text-navy-400">|</span>
+        {/* Discount + countdown - always visible */}
+        <span className="flex items-center gap-1.5 flex-wrap justify-center">
+          🔥
+          <span className="line-through text-navy-400">{originalPrice} Kč</span>
           <span className="font-bold text-gold-400">{currentPrice} Kč</span>
-          {" "}— končí za{" "}
+          <span className="text-navy-300">—</span>
           <span className="font-mono font-bold text-gold-400">
             {String(timeLeft.hours).padStart(2, "0")}:
             {String(timeLeft.minutes).padStart(2, "0")}:

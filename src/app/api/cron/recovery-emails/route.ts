@@ -11,12 +11,13 @@ export async function GET(request: Request) {
   }
 
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
   const abandonedOrders = await prisma.order.findMany({
     where: {
       status: { not: "PAID" },
       recoveryEmailSent: false,
-      createdAt: { lt: oneHourAgo },
+      createdAt: { gt: oneDayAgo, lt: oneHourAgo },
     },
     include: { user: true },
   });
@@ -24,13 +25,23 @@ export async function GET(request: Request) {
   let sent = 0;
 
   for (const order of abandonedOrders) {
-    if (!order.user?.email) continue;
+    const email = order.user?.email || order.email;
+    if (!email) continue;
+
+    // Skip admin users
+    if (order.user?.role === "ADMIN") {
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { recoveryEmailSent: true },
+      });
+      continue;
+    }
 
     try {
       const plan = order.plan === "PREMIUM" ? "Průvodce + Odznak" : "Základní průvodce";
       await sendRecoveryEmail({
-        customerName: order.user.name || "",
-        customerEmail: order.user.email,
+        customerName: order.user?.name || "",
+        customerEmail: email,
         plan,
         checkoutUrl: `https://the-pulse.cz/objednavka`,
       });
@@ -45,6 +56,16 @@ export async function GET(request: Request) {
       console.error(`Failed to send recovery email for order ${order.id}:`, error);
     }
   }
+
+  // Mark very old orders as sent to prevent future spam
+  await prisma.order.updateMany({
+    where: {
+      status: { not: "PAID" },
+      recoveryEmailSent: false,
+      createdAt: { lt: oneDayAgo },
+    },
+    data: { recoveryEmailSent: true },
+  });
 
   return NextResponse.json({ sent, total: abandonedOrders.length });
 }

@@ -41,21 +41,26 @@ export async function POST(request: Request) {
         },
       });
 
-      // Send notification email (fire-and-forget to avoid webhook timeout)
+      // Send notification email (with 5s timeout to avoid webhook timeout)
       const order = await prisma.order.findFirst({
         where: { stripeSessionId: session.id },
         include: { user: true },
       });
       if (order) {
-        sendOrderNotification({
-          customerName: order.user?.name || session.customer_details?.name || session.metadata?.name || "Neznamy",
-          customerEmail: order.user?.email || order.email || session.customer_details?.email || "",
-          plan: order.plan === "PREMIUM" ? "Pruvodce + Odznak" : "Zakladni pruvodce",
-          amount: order.amount / 100,
-          orderId: order.id,
-        }).catch((emailError) => {
+        try {
+          await Promise.race([
+            sendOrderNotification({
+              customerName: order.user?.name || session.customer_details?.name || session.metadata?.name || "Neznamy",
+              customerEmail: order.user?.email || order.email || session.customer_details?.email || "",
+              plan: order.plan === "PREMIUM" ? "Pruvodce + Odznak" : "Zakladni pruvodce",
+              amount: order.amount / 100,
+              orderId: order.id,
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Email timeout")), 5000)),
+          ]);
+        } catch (emailError) {
           console.error("Failed to send order notification email:", emailError);
-        });
+        }
       }
 
       break;
