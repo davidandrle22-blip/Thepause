@@ -22,6 +22,12 @@ const TEASERS = [
     detail:
       "Nobelova cena za medicínu odhalila klíčový proces, který se spouští při půstu",
   },
+  {
+    icon: "🏅",
+    teaser: "Dokažte sobě i okolí, že to zvládnete",
+    detail:
+      "Po dokončení půstu získáte osobní certifikát s ověřitelným ID, který můžete sdílet na sociálních sítích",
+  },
 ];
 
 export function CuriosityTeasers() {

@@ -41,23 +41,21 @@ export async function POST(request: Request) {
         },
       });
 
-      // Send notification email
-      try {
-        const order = await prisma.order.findFirst({
-          where: { stripeSessionId: session.id },
-          include: { user: true },
+      // Send notification email (fire-and-forget to avoid webhook timeout)
+      const order = await prisma.order.findFirst({
+        where: { stripeSessionId: session.id },
+        include: { user: true },
+      });
+      if (order) {
+        sendOrderNotification({
+          customerName: order.user?.name || session.customer_details?.name || session.metadata?.name || "Neznamy",
+          customerEmail: order.user?.email || order.email || session.customer_details?.email || "",
+          plan: order.plan === "PREMIUM" ? "Pruvodce + Odznak" : "Zakladni pruvodce",
+          amount: order.amount / 100,
+          orderId: order.id,
+        }).catch((emailError) => {
+          console.error("Failed to send order notification email:", emailError);
         });
-        if (order) {
-          await sendOrderNotification({
-            customerName: order.user?.name || session.customer_details?.name || session.metadata?.name || "Neznamy",
-            customerEmail: order.user?.email || order.email || session.customer_details?.email || "",
-            plan: order.plan === "PREMIUM" ? "Pruvodce + Odznak" : "Zakladni pruvodce",
-            amount: order.amount / 100,
-            orderId: order.id,
-          });
-        }
-      } catch (emailError) {
-        console.error("Failed to send order notification email:", emailError);
       }
 
       break;

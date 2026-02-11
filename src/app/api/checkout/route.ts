@@ -105,6 +105,7 @@ export async function GET(request: Request) {
     await prisma.order.create({
       data: {
         userId: user.id,
+        email: user.email,
         plan: planKey,
         amount: price,
         stripeSessionId: checkoutSession.id,

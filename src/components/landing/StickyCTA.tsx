@@ -34,7 +34,7 @@ export function StickyCTA() {
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-sm font-bold text-navy-800">
-                  <span className="line-through text-navy-400 mr-1">499 Kč</span>
+                  <span className="line-through text-navy-400 mr-1">{Math.round((Number(prices.basic) || 199) * 1.1)} Kč</span>
                   {prices.basic} Kč
                 </p>
                 <p className="text-xs text-navy-500">Interaktivní průvodce</p>

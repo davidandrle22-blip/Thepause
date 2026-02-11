@@ -40,6 +40,12 @@ const benefits = [
     description: "Nobelovou cenou oceněný proces buněčné recyklace. Tělo odstraňuje poškozené buňky a regeneruje nové.",
     color: "bg-teal-50 text-teal-600",
   },
+  {
+    emoji: "🏅",
+    title: "Certifikát po dokončení",
+    description: "Po úspěšném dokončení 5denního půstu získáte osobní certifikát, který můžete sdílet s přáteli.",
+    color: "bg-gold-50 text-gold-600",
+  },
 ];
 
 export function BenefitsSection() {

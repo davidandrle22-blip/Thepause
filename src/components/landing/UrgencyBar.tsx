@@ -43,6 +43,9 @@ export function UrgencyBar() {
     return () => clearInterval(interval);
   }, []);
 
+  const currentPrice = Number(prices.basic) || 199;
+  const originalPrice = Math.round(currentPrice * 1.1);
+
   return (
     <div className="bg-navy-900 text-white py-2.5 text-center text-sm">
       <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
@@ -73,7 +76,10 @@ export function UrgencyBar() {
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          🔥 Akční cena {prices.basic} Kč — končí za{" "}
+          🔥 SLEVA{" "}
+          <span className="line-through text-navy-400">{originalPrice} Kč</span>{" "}
+          <span className="font-bold text-gold-400">{currentPrice} Kč</span>
+          {" "}— končí za{" "}
           <span className="font-mono font-bold text-gold-400">
             {String(timeLeft.hours).padStart(2, "0")}:
             {String(timeLeft.minutes).padStart(2, "0")}:

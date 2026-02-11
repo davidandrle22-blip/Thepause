@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { ShareButton } from "./ShareButton";
 
 export const dynamic = "force-dynamic";
 
@@ -74,6 +75,8 @@ export default async function CertifikatPage({ params }: Props) {
             </p>
           </div>
         </div>
+
+        <ShareButton certificateId={certificate.certificateId} name={certificate.name} />
 
         <p className="text-center text-white/40 text-xs mt-6">
           Overeno na The-Pulse.cz
