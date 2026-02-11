@@ -47,7 +47,7 @@ export function UrgencyBar() {
   const originalPrice = Math.round(currentPrice * 1.1);
 
   return (
-    <div className="bg-navy-900 text-white py-2.5 text-center text-sm">
+    <div className="fixed top-0 left-0 right-0 z-[51] bg-navy-900 text-white py-2.5 text-center text-sm">
       <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
         <AnimatePresence mode="wait">
           <motion.span
