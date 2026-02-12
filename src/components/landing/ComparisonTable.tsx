@@ -128,7 +128,6 @@ export function ComparisonTable() {
           className="text-center text-navy-500 text-sm mt-8"
         >
           Kompletní interaktivní průvodce za zlomek ceny alternativ.
-          Navíc s 14denní garancí vrácení peněz.
         </motion.p>
       </div>
     </section>

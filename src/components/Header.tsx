@@ -25,7 +25,7 @@ export function Header() {
                 </linearGradient>
               </defs>
             </svg>
-            <span className="text-xl font-bold gradient-text">The-Pulse</span>
+            <span className="text-xl font-bold gradient-text">The-Pulse.cz</span>
           </Link>
 
           {/* Desktop nav */}

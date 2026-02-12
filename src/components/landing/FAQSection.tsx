@@ -45,11 +45,6 @@ const faqs = [
     answer:
       "Interaktivní timeline 120 hodin (hodinu po hodině), personalizovaný obsah podle vašeho cíle (hubnutí/mentální reset/zdraví), praktické checklisty, doporučené tekutiny s dávkováním, varovné signály, deník půstu, refeeding protokol a certifikát o dokončení.",
   },
-  {
-    question: "Mohu dostat vrácení peněz?",
-    answer:
-      "Ano, nabízíme 14denní garanci vrácení peněz bez udání důvodu. Pokud nebudete spokojeni, napište nám na the-pause@seznam.cz a peníze vám vrátíme.",
-  },
 ];
 
 export function FAQSection() {

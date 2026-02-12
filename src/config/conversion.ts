@@ -30,7 +30,6 @@ export const CONVERSION_CONFIG = {
   trustBadges: [
     { icon: "🔒", text: "Bezpečná platba přes Stripe" },
     { icon: "✅", text: "Ověřeno 2 847+ zákazníky" },
-    { icon: "💯", text: "14denní garance vrácení peněz" },
     { icon: "🇨🇿", text: "Český produkt" },
     { icon: "📱", text: "Okamžitý přístup po zaplacení" },
   ],

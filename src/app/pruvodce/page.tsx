@@ -1015,14 +1015,27 @@ function PruvodceContent() {
             Dokončeno {completedCount} z {FASTING_PHASES.length} fází
           </p>
           {allDone ? (
-            <Link href="/odznak">
-              <Button className="bg-gold-500 hover:bg-gold-600 text-white py-6 px-12 rounded-xl text-lg font-bold shadow-lg animate-pulse-glow">
-                🏆 Dokončil/a jsem půst!
-              </Button>
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-gradient-to-br from-gold-50 to-teal-50 border-2 border-gold-300 rounded-2xl p-8 max-w-md mx-auto shadow-lg"
+            >
+              <div className="text-5xl mb-3">🏆</div>
+              <h3 className="text-xl font-bold text-navy-900 mb-2">
+                Gratulujeme! Zvládli jste to!
+              </h3>
+              <p className="text-sm text-navy-600 mb-6">
+                Dokončili jste všech {FASTING_PHASES.length} fází 5denního vodního půstu. Vygenerujte si svůj certifikát o dokončení.
+              </p>
+              <Link href="/odznak">
+                <Button className="w-full bg-gold-500 hover:bg-gold-600 text-white py-6 rounded-xl text-lg font-bold shadow-lg animate-pulse-glow">
+                  🎖️ Získat certifikát
+                </Button>
+              </Link>
+            </motion.div>
           ) : (
             <p className="text-xs text-navy-400">
-              Dokončete všechny fáze pro odemčení odznaku
+              Dokončete všechny fáze pro odemčení certifikátu
             </p>
           )}
         </div>

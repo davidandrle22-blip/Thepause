@@ -22,7 +22,6 @@ const AUTHORITIES = [
 ];
 
 const GUARANTEES = [
-  { icon: "🛡️", text: "14denní garance vrácení peněz" },
   { icon: "🔒", text: "Bezpečná platba přes Stripe" },
   { icon: "📱", text: "Okamžitý přístup po zaplacení" },
   { icon: "🇨🇿", text: "Český produkt, česká podpora" },
@@ -79,10 +78,10 @@ export function AuthoritySection() {
           className="bg-white rounded-2xl p-6 sm:p-8 border-2 border-teal-200 shadow-md text-center"
         >
           <h3 className="text-xl font-bold text-navy-900 mb-2">
-            Nakupujete bez rizika
+            Nakupujete s jistotou
           </h3>
           <p className="text-navy-600 text-sm mb-6">
-            Nejste spokojeni? Vrátíme vám peníze bez otázek.
+            Bezpečný nákup s okamžitým přístupem k obsahu.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
             {GUARANTEES.map((g, i) => (
