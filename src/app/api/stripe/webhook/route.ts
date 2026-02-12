@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
-import { sendOrderNotification } from "@/lib/email";
+import { sendOrderNotification, sendRecoveryEmail } from "@/lib/email";
 import Stripe from "stripe";
 
 export const dynamic = "force-dynamic";
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         },
       });
 
-      // Send notification email (with 5s timeout to avoid webhook timeout)
+      // Send admin + customer notification emails (with 5s timeout)
       const order = await prisma.order.findFirst({
         where: { stripeSessionId: session.id },
         include: { user: true },
@@ -50,9 +50,9 @@ export async function POST(request: Request) {
         try {
           await Promise.race([
             sendOrderNotification({
-              customerName: order.user?.name || session.customer_details?.name || session.metadata?.name || "Neznamy",
+              customerName: order.user?.name || session.customer_details?.name || session.metadata?.name || "Neznámý",
               customerEmail: order.user?.email || order.email || session.customer_details?.email || "",
-              plan: order.plan === "PREMIUM" ? "Pruvodce + Odznak" : "Zakladni pruvodce",
+              plan: order.plan === "PREMIUM" ? "Průvodce + Odznak" : "Základní průvodce",
               amount: order.amount / 100,
               orderId: order.id,
             }),
@@ -73,6 +73,34 @@ export async function POST(request: Request) {
         where: { stripeSessionId: session.id },
         data: { status: "FAILED" },
       });
+
+      // Send abandoned checkout email to customer
+      try {
+        const order = await prisma.order.findFirst({
+          where: { stripeSessionId: session.id },
+          include: { user: true },
+        });
+
+        if (order && !order.recoveryEmailSent) {
+          const email = order.user?.email || order.email;
+          if (email) {
+            const plan = order.plan === "PREMIUM" ? "Průvodce + Odznak" : "Základní průvodce";
+            await sendRecoveryEmail({
+              customerName: order.user?.name || "",
+              customerEmail: email,
+              plan,
+              checkoutUrl: "https://the-pulse.cz/objednavka",
+            });
+
+            await prisma.order.update({
+              where: { id: order.id },
+              data: { recoveryEmailSent: true },
+            });
+          }
+        }
+      } catch (emailError) {
+        console.error("Failed to send abandoned checkout email:", emailError);
+      }
 
       break;
     }

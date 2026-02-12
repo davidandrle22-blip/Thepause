@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
+import { sendWelcomeEmail, sendAdminNewUserNotification } from "./email";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
@@ -80,6 +81,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 image: user.image ?? null,
               },
             });
+
+            // Fire-and-forget: welcome email + admin notification for new Google user
+            Promise.all([
+              sendWelcomeEmail({ name: dbUser.name || "", email }),
+              sendAdminNewUserNotification({ name: dbUser.name || "", email }),
+            ]).catch((err) => console.error("Google sign-up email error:", err));
           }
 
           // Upsert the Account record for Google

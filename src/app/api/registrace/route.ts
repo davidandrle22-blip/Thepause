@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { sendWelcomeEmail, sendAdminNewUserNotification } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,12 @@ export async function POST(request: Request) {
         ...(goal && { goal }),
       },
     });
+
+    // Fire-and-forget: welcome email + admin notification
+    Promise.all([
+      sendWelcomeEmail({ name: user.name || "", email: user.email! }),
+      sendAdminNewUserNotification({ name: user.name || "", email: user.email! }),
+    ]).catch((err) => console.error("Registration email error:", err));
 
     return NextResponse.json(
       { user: { id: user.id, email: user.email, name: user.name } },
