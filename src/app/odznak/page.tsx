@@ -4,79 +4,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/Mascot";
-import { jsPDF } from "jspdf";
 import { DeviceGate } from "@/components/DeviceGate";
 import { GuardedContent } from "@/components/GuardedContent";
-
-function generatePDF(name: string, startDate: string, endDate: string, certId: string) {
-  const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
-
-  // Background
-  doc.setFillColor(15, 23, 42);
-  doc.rect(0, 0, 297, 210, "F");
-
-  // Gradient overlay
-  doc.setFillColor(19, 78, 74);
-  doc.rect(0, 70, 297, 70, "F");
-
-  // Border
-  doc.setDrawColor(251, 191, 36);
-  doc.setLineWidth(2);
-  doc.rect(10, 10, 277, 190);
-  doc.setDrawColor(245, 158, 11);
-  doc.setLineWidth(0.5);
-  doc.rect(14, 14, 269, 182);
-
-  // Logo text
-  doc.setFontSize(12);
-  doc.setTextColor(94, 234, 212);
-  doc.text("The-Pulse.cz", 148.5, 30, { align: "center" });
-
-  // Title
-  doc.setFontSize(14);
-  doc.setTextColor(251, 191, 36);
-  doc.text("CERTIFIKAT", 148.5, 50, { align: "center" });
-
-  doc.setFontSize(28);
-  doc.setTextColor(255, 255, 255);
-  doc.text("5 DNI VODNIHO PUSTU", 148.5, 65, { align: "center" });
-
-  doc.setFontSize(12);
-  doc.setTextColor(251, 191, 36);
-  doc.text("USPESNE DOKONCENO", 148.5, 75, { align: "center" });
-
-  // Name
-  doc.setFontSize(24);
-  doc.setTextColor(255, 255, 255);
-  doc.text(name, 148.5, 100, { align: "center" });
-
-  // Dates
-  doc.setFontSize(11);
-  doc.setTextColor(153, 246, 228);
-  doc.text(`Zahajeni: ${startDate}  |  Dokonceni: ${endDate}`, 148.5, 115, { align: "center" });
-
-  // Stats
-  doc.setFontSize(10);
-  doc.text("120 hodin | 5 dni | Kompletni autofagie | Reset imunity | Bunecna regenerace", 148.5, 130, { align: "center" });
-
-  // Certificate ID
-  doc.setFontSize(9);
-  doc.setTextColor(148, 163, 184);
-  doc.text(`Certifikat ID: ${certId}`, 148.5, 150, { align: "center" });
-  doc.text(`Datum vystaveni: ${new Date().toLocaleDateString("cs-CZ")}`, 148.5, 158, { align: "center" });
-
-  // Footer
-  doc.setFontSize(10);
-  doc.setTextColor(94, 234, 212);
-  doc.text("The-Pulse.cz — Chytry pruvodce vodnim pustem", 148.5, 180, { align: "center" });
-
-  // Verification URL
-  doc.setFontSize(8);
-  doc.setTextColor(148, 163, 184);
-  doc.text(`Overeni: https://the-pulse.cz/certifikat/${certId}`, 148.5, 188, { align: "center" });
-
-  doc.save(`the-pulse-certifikat-${certId}.pdf`);
-}
+import FastingCertificate from "@/components/FastingCertificate";
 
 export default function OdznakPage() {
   return (
@@ -89,14 +19,13 @@ export default function OdznakPage() {
 }
 
 function OdznakContent() {
-  const [step, setStep] = useState<"form" | "confirmed" | "done">("form");
+  const [step, setStep] = useState<"form" | "done">("form");
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [certId, setCertId] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [shared, setShared] = useState(false);
 
   const handleStartDateChange = (val: string) => {
     setStartDate(val);
@@ -136,25 +65,6 @@ function OdznakContent() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleShare = async () => {
-    const shareData = {
-      title: "Dokoncil/a jsem 5denni vodni pust!",
-      text: `Prave jsem uspesne dokoncil/a 5denni vodni pust s The-Pulse.cz — 120 hodin, jen voda. Certifikat: ${certId}`,
-      url: `https://the-pulse.cz/certifikat/${certId}`,
-    };
-
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-        setShared(true);
-      } else {
-        await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
-        setShared(true);
-        setTimeout(() => setShared(false), 2000);
-      }
-    } catch {}
   };
 
   if (step === "form") {
@@ -237,131 +147,17 @@ function OdznakContent() {
   }
 
   return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#0a0c10] flex items-center justify-center px-4 overflow-x-auto">
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, type: "spring" }}
-        className="text-center max-w-lg"
+        transition={{ duration: 0.6, type: "spring" }}
       >
-        {/* Badge */}
-        <motion.div
-          initial={{ rotate: -10, scale: 0 }}
-          animate={{ rotate: 0, scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.8, type: "spring" }}
-          className="mx-auto mb-8"
-        >
-          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" className="mx-auto drop-shadow-2xl">
-            <circle cx="100" cy="100" r="95" stroke="#fbbf24" strokeWidth="4" fill="none" />
-            <circle cx="100" cy="100" r="88" stroke="#f59e0b" strokeWidth="2" fill="none" />
-            <circle cx="100" cy="100" r="85" fill="url(#badgeGrad)" />
-            <path d="M100 40l15.5 31.3 34.5 5-25 24.3 5.9 34.4L100 119.8 69.1 135l5.9-34.4-25-24.3 34.5-5L100 40z" fill="#fbbf24" stroke="#f59e0b" strokeWidth="2" />
-            <text x="100" y="160" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">5 DNI VODNIHO PUSTU</text>
-            <text x="100" y="178" textAnchor="middle" fill="#fbbf24" fontSize="10" fontWeight="bold">DOKONCENO</text>
-            <defs>
-              <linearGradient id="badgeGrad" x1="15" y1="15" x2="185" y2="185">
-                <stop stopColor="#0f172a" />
-                <stop offset="0.5" stopColor="#134e4a" />
-                <stop offset="1" stopColor="#0f766e" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Gratulujeme, {name}!
-          </h1>
-          <p className="text-white/60 text-sm mb-6">
-            Certifikat ID: {certId}
-          </p>
-
-          <div className="grid grid-cols-3 gap-4 mb-8">
-            {[
-              { label: "Dni", value: "5", icon: "📅" },
-              { label: "Hodin", value: "120", icon: "⏰" },
-              { label: "Spalovani", value: "~1.5kg", icon: "🔥" },
-            ].map((stat) => (
-              <div key={stat.label} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                <span className="text-2xl">{stat.icon}</span>
-                <div className="text-2xl font-bold text-white mt-1">{stat.value}</div>
-                <div className="text-xs text-white/60">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Download & Share */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
-            <Button
-              onClick={() => generatePDF(name, startDate, endDate, certId)}
-              className="bg-gold-500 hover:bg-gold-600 text-white px-8 py-5 rounded-xl text-base font-medium shadow-lg"
-            >
-              Stahnout certifikat (PDF)
-            </Button>
-            <Button
-              onClick={handleShare}
-              variant="outline"
-              className="border-white/30 text-white hover:bg-white/10 px-8 py-5 rounded-xl text-base"
-            >
-              {shared ? "Sdileno!" : "Sdilet"}
-            </Button>
-          </div>
-
-          {/* Share links */}
-          <div className="flex items-center justify-center gap-3">
-            <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://the-pulse.cz/certifikat/${certId}`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors text-sm font-bold"
-              title="Facebook"
-            >
-              f
-            </a>
-            <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Dokoncil/a jsem 5denni vodni pust! 🏆`)}&url=${encodeURIComponent(`https://the-pulse.cz/certifikat/${certId}`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors text-sm font-bold"
-              title="X/Twitter"
-            >
-              X
-            </a>
-            <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://the-pulse.cz/certifikat/${certId}`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors text-sm font-bold"
-              title="LinkedIn"
-            >
-              in
-            </a>
-            <button
-              onClick={async () => {
-                await navigator.clipboard.writeText(`https://the-pulse.cz/certifikat/${certId}`);
-                setShared(true);
-                setTimeout(() => setShared(false), 2000);
-              }}
-              className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors text-sm"
-              title="Kopirovat odkaz"
-            >
-              🔗
-            </button>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-8"
-        >
-          <Mascot message="Jsem na tebe neuveritelne hrda! Jsi sampion!" size="sm" />
-        </motion.div>
+        <FastingCertificate
+          userName={name}
+          completionDate={endDate}
+          certificateId={certId}
+        />
       </motion.div>
     </div>
   );

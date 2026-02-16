@@ -12,9 +12,17 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   return {
-    title: `Certifikat ${id} | The-Pulse.cz`,
-    description: `Overeni certifikatu o dokonceni 5denniho vodniho pustu.`,
+    title: `Certifikát ${id} | The-Pulse.cz`,
+    description: `Ověření certifikátu o dokončení 5denního vodního půstu.`,
   };
+}
+
+function formatDateCzech(date: Date): string {
+  const months = [
+    "ledna", "února", "března", "dubna", "května", "června",
+    "července", "srpna", "září", "října", "listopadu", "prosince",
+  ];
+  return `${date.getDate()}. ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
 export default async function CertifikatPage({ params }: Props) {
@@ -28,58 +36,126 @@ export default async function CertifikatPage({ params }: Props) {
     notFound();
   }
 
+  const startDate = certificate.startDate;
+  const endDate = certificate.endDate;
+  const durationMs = endDate.getTime() - startDate.getTime();
+  const durationHours = Math.round(durationMs / (1000 * 60 * 60));
+
   return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12" style={{ background: "linear-gradient(135deg, #0a0c10 0%, #0f1218 30%, #141a24 60%, #0d1117 100%)" }}>
       <div className="max-w-lg w-full">
-        <div className="bg-navy-800 rounded-2xl border-2 border-gold-400 p-8 text-center shadow-2xl">
-          {/* Logo */}
-          <p className="text-teal-400 text-sm mb-4">The-Pulse.cz</p>
+        <div
+          className="relative overflow-hidden rounded-lg p-8 text-center"
+          style={{
+            background: "linear-gradient(135deg, #0a0c10 0%, #0f1218 50%, #141a24 100%)",
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}
+        >
+          {/* Ambient glow */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              top: "-80px",
+              right: "-60px",
+              width: "250px",
+              height: "250px",
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%)",
+            }}
+          />
 
-          {/* Badge */}
-          <div className="mx-auto mb-6">
-            <svg width="120" height="120" viewBox="0 0 200 200" fill="none" className="mx-auto">
-              <circle cx="100" cy="100" r="95" stroke="#fbbf24" strokeWidth="4" fill="none" />
-              <circle cx="100" cy="100" r="85" fill="url(#certGrad)" />
-              <path d="M100 40l15.5 31.3 34.5 5-25 24.3 5.9 34.4L100 119.8 69.1 135l5.9-34.4-25-24.3 34.5-5L100 40z" fill="#fbbf24" stroke="#f59e0b" strokeWidth="2" />
-              <defs>
-                <linearGradient id="certGrad" x1="15" y1="15" x2="185" y2="185">
-                  <stop stopColor="#0f172a" />
-                  <stop offset="0.5" stopColor="#134e4a" />
-                  <stop offset="1" stopColor="#0f766e" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
+          {/* Inner border */}
+          <div
+            className="absolute pointer-events-none rounded"
+            style={{
+              inset: "12px",
+              border: "1px solid rgba(255,255,255,0.03)",
+            }}
+          />
 
-          <p className="text-gold-400 text-xs font-bold uppercase tracking-widest mb-2">
-            Certifikat
-          </p>
-          <h1 className="text-white text-2xl font-bold mb-1">
-            5 dni vodniho pustu
-          </h1>
-          <p className="text-gold-400 text-sm mb-6">Uspesne dokonceno</p>
+          {/* Brand */}
+          <div className="relative z-10">
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <span className="text-lg">💧</span>
+              <span className="text-xs font-semibold tracking-[0.15em] uppercase" style={{ color: "rgba(255,255,255,0.5)" }}>
+                The-Pulse.cz
+              </span>
+            </div>
 
-          <p className="text-white text-xl font-bold mb-4">{certificate.name}</p>
-
-          <div className="text-teal-300 text-sm space-y-1 mb-6">
-            <p>Zahajeni: {certificate.startDate.toLocaleDateString("cs-CZ")}</p>
-            <p>Dokonceni: {certificate.endDate.toLocaleDateString("cs-CZ")}</p>
-          </div>
-
-          <div className="border-t border-navy-700 pt-4">
-            <p className="text-navy-400 text-xs">
-              Certifikat ID: {certificate.certificateId}
+            {/* Certificate label */}
+            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase mb-2" style={{ color: "rgba(59, 130, 246, 0.7)" }}>
+              Certifikát o dokončení
             </p>
-            <p className="text-navy-500 text-xs mt-1">
-              Vystaveno: {certificate.createdAt.toLocaleDateString("cs-CZ")}
+
+            <h1 className="text-xl font-light tracking-[0.12em] uppercase mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
+              5denní vodní půst
+            </h1>
+
+            {/* Decorative line */}
+            <div className="mx-auto mb-6" style={{ width: "60px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent)" }} />
+
+            <p className="text-xs mb-3" style={{ color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em" }}>
+              Tímto certifikujeme, že
             </p>
+
+            <h2 className="text-3xl font-bold text-white mb-3" style={{ textShadow: "0 0 40px rgba(59,130,246,0.15)" }}>
+              {certificate.name}
+            </h2>
+
+            <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>
+              úspěšně dokončil/a {durationHours}hodinový vodní půst
+              <br />
+              pod vedením průvodce The-Pulse.cz
+            </p>
+
+            {/* Stats row */}
+            <div className="flex items-center justify-center gap-8 mb-6">
+              <div className="text-center">
+                <div className="text-xl font-bold text-white">{durationHours}h</div>
+                <div className="text-[10px] uppercase tracking-[0.1em] mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>Délka půstu</div>
+              </div>
+              <div style={{ width: "1px", height: "28px", background: "rgba(255,255,255,0.08)" }} />
+              <div className="text-center">
+                <div className="text-xl font-bold text-white">5</div>
+                <div className="text-[10px] uppercase tracking-[0.1em] mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>Dní</div>
+              </div>
+              <div style={{ width: "1px", height: "28px", background: "rgba(255,255,255,0.08)" }} />
+              <div className="text-center">
+                <div className="text-sm font-semibold text-white">{formatDateCzech(endDate)}</div>
+                <div className="text-[10px] uppercase tracking-[0.1em] mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>Datum dokončení</div>
+              </div>
+            </div>
+
+            {/* Verified badge */}
+            <div
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full mb-6"
+              style={{
+                border: "1px solid rgba(59,130,246,0.2)",
+                background: "rgba(59,130,246,0.05)",
+              }}
+            >
+              <span className="text-sm">🏆</span>
+              <span className="text-[10px] font-semibold tracking-[0.15em] uppercase" style={{ color: "rgba(59,130,246,0.7)" }}>
+                Ověřený certifikát
+              </span>
+            </div>
+
+            {/* Certificate details */}
+            <div className="pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'Courier New', monospace" }}>
+                ID: {certificate.certificateId}
+              </p>
+              <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.2)" }}>
+                Vystaveno: {certificate.createdAt.toLocaleDateString("cs-CZ")}
+              </p>
+            </div>
           </div>
         </div>
 
         <ShareButton certificateId={certificate.certificateId} name={certificate.name} />
 
-        <p className="text-center text-white/40 text-xs mt-6">
-          Overeno na The-Pulse.cz
+        <p className="text-center text-xs mt-6" style={{ color: "rgba(255,255,255,0.25)" }}>
+          Ověřeno na The-Pulse.cz
         </p>
       </div>
     </div>
