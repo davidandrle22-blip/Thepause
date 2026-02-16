@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     const diffDays = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 
     if (diffDays !== 5) {
-      return NextResponse.json({ error: "Datum dokonceni musi byt 5 dnu po zahajeni" }, { status: 400 });
+      return NextResponse.json({ error: "Datum dokončení musí být 5 dní po zahájení" }, { status: 400 });
     }
 
     const certificateId = generateCertId();

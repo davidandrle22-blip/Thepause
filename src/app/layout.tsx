@@ -15,27 +15,27 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "The-Pulse.cz | 5denni pruvodce vodnim pustem | Water Fasting Guide",
+    default: "The-Pulse.cz | 5denní průvodce vodním půstem | Water Fasting Guide",
     template: "%s | The-Pulse.cz",
   },
   description:
-    "Kompletni pruvodce 5dennim vodnim pustem. Naucte se spravne drzet vodni pust, detoxikujte telo a mysl. Interaktivni pruvodce s dennim checklistem a certifikatem.",
+    "Kompletní průvodce 5denním vodním půstem. Naučte se správně držet vodní půst, detoxikujte tělo a mysl. Interaktivní průvodce s denním checklistem a certifikátem.",
   keywords: [
-    "vodni pust",
+    "vodní půst",
     "water fast",
     "water fasting",
     "fasting",
-    "5denni pust",
-    "pruvodce pustem",
-    "jak drzet vodni pust",
-    "vodni pust pruvodce",
-    "detox pustem",
+    "5denní půst",
+    "průvodce půstem",
+    "jak držet vodní půst",
+    "vodní půst průvodce",
+    "detox půstem",
     "intermittent fasting",
-    "pust pro zdravi",
+    "půst pro zdraví",
     "autofagie",
-    "hubnuti pustem",
-    "ketoza",
-    "ocista organismu",
+    "hubnutí půstem",
+    "ketóza",
+    "očista organismu",
   ],
   authors: [{ name: "The-Pulse.cz" }],
   creator: "The-Pulse.cz",
@@ -79,14 +79,14 @@ const structuredData = {
     },
     {
       "@type": "Product",
-      name: "Pruvodce 5dennim vodnim pustem",
-      description: "Kompletni interaktivni pruvodce 5dennim vodnim pustem s dennim checklistem, vedou a certifikatem.",
+      name: "Průvodce 5denním vodním půstem",
+      description: "Kompletní interaktivní průvodce 5denním vodním půstem s denním checklistem, vedením a certifikátem.",
       url: "https://the-pulse.cz",
       brand: { "@type": "Brand", name: "The-Pulse.cz" },
       offers: [
         {
           "@type": "Offer",
-          name: "Zakladni pruvodce",
+          name: "Základní průvodce",
           price: "199",
           priceCurrency: "CZK",
           availability: "https://schema.org/InStock",
@@ -94,7 +94,7 @@ const structuredData = {
         },
         {
           "@type": "Offer",
-          name: "Pruvodce + Certifikat",
+          name: "Průvodce + Certifikát",
           price: "298",
           priceCurrency: "CZK",
           availability: "https://schema.org/InStock",
@@ -110,7 +110,7 @@ const structuredData = {
     {
       "@type": "WebApplication",
       name: "The-Pulse.cz",
-      description: "Interaktivni pruvodce 5dennim vodnim pustem s odbornym vedenim",
+      description: "Interaktivní průvodce 5denním vodním půstem s odborným vedením",
       url: "https://the-pulse.cz",
       applicationCategory: "HealthApplication",
       operatingSystem: "Web",
@@ -120,7 +120,7 @@ const structuredData = {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Domov", item: "https://the-pulse.cz" },
-        { "@type": "ListItem", position: 2, name: "Objednavka", item: "https://the-pulse.cz/objednavka" },
+        { "@type": "ListItem", position: 2, name: "Objednávka", item: "https://the-pulse.cz/objednavka" },
       ],
     },
     {
@@ -128,18 +128,18 @@ const structuredData = {
       mainEntity: [
         {
           "@type": "Question",
-          name: "Je vodni pust bezpecny?",
+          name: "Je vodní půst bezpečný?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Pro zdrave dospele osoby je kratkodoby vodni pust obecne povazovan za bezpecny. Vzdy doporucujeme konzultaci s lekarem.",
+            text: "Pro zdravé dospělé osoby je krátkodobý vodní půst obecně považován za bezpečný. Vždy doporučujeme konzultaci s lékařem.",
           },
         },
         {
           "@type": "Question",
-          name: "Kolik stoji pruvodce?",
+          name: "Kolik stojí průvodce?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Zakladni pruvodce stoji 199 Kc. Verze s certifikatem stoji 298 Kc.",
+            text: "Základní průvodce stojí 199 Kč. Verze s certifikátem stojí 298 Kč.",
           },
         },
         {
@@ -147,7 +147,7 @@ const structuredData = {
           name: "Co je autofagie?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Autofagie je prirozeny proces, pri kterem telo recykluje poskozene bunecne struktury. Vyznamna autofagie nastupuje priblizne po 48-72 hodinach pustu.",
+            text: "Autofagie je přirozený proces, při kterém tělo recykluje poškozené buněčné struktury. Významná autofagie nastupuje přibližně po 48–72 hodinách půstu.",
           },
         },
       ],

@@ -39,7 +39,7 @@ function OdznakContent() {
   const handleGenerateCert = async () => {
     setError("");
     if (!name.trim() || !startDate || !endDate) {
-      setError("Vyplnte vsechna pole.");
+      setError("Vyplňte všechna pole.");
       return;
     }
 
@@ -53,7 +53,7 @@ function OdznakContent() {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Chyba pri vytvareni certifikatu.");
+        setError(data.error || "Chyba při vytváření certifikátu.");
         setLoading(false);
         return;
       }
@@ -61,7 +61,7 @@ function OdznakContent() {
       setCertId(data.certificate.certificateId);
       setStep("done");
     } catch {
-      setError("Chyba pri vytvareni certifikatu.");
+      setError("Chyba při vytváření certifikátu.");
     } finally {
       setLoading(false);
     }
@@ -76,15 +76,15 @@ function OdznakContent() {
           className="w-full max-w-md"
         >
           <div className="text-center mb-6">
-            <Mascot message="Opravdu jsi to dokazal/a? To je uzasne!" size="sm" />
+            <Mascot message="Opravdu jsi to dokázal/a? To je úžasné!" size="sm" />
           </div>
 
           <div className="bg-white rounded-2xl shadow-xl border border-teal-100 p-8">
             <h1 className="text-2xl font-bold text-navy-900 mb-2 text-center">
-              Vas certifikat
+              Váš certifikát
             </h1>
             <p className="text-navy-600 text-sm text-center mb-6">
-              Vyplnte udaje pro generovani certifikatu
+              Vyplňte údaje pro generování certifikátu
             </p>
 
             {error && (
@@ -96,19 +96,19 @@ function OdznakContent() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-navy-700 mb-1">
-                  Jmeno a prijmeni
+                  Jméno a příjmení
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
-                  placeholder="Jan Novak"
+                  placeholder="Jan Novák"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-navy-700 mb-1">
-                  Datum zahajeni pustu
+                  Datum zahájení půstu
                 </label>
                 <input
                   type="date"
@@ -119,7 +119,7 @@ function OdznakContent() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-navy-700 mb-1">
-                  Datum dokonceni pustu
+                  Datum dokončení půstu
                 </label>
                 <input
                   type="date"
@@ -128,7 +128,7 @@ function OdznakContent() {
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
                 />
                 <p className="text-xs text-navy-400 mt-1">
-                  Musi byt presne 5 dni po zahajeni
+                  Musí být přesně 5 dní po zahájení
                 </p>
               </div>
             </div>
